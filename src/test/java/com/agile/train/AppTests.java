@@ -1,4 +1,4 @@
-package com.github.pps;
+package com.agile.train;
 
 import org.junit.Before;
 import org.junit.Test;
