@@ -1,0 +1,51 @@
+apply plugin: 'war'
+apply plugin: 'idea'
+apply plugin: 'jetty'
+
+compileJava {
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
+}
+
+jettyRun {
+    httpPort = 9898
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    provided
+}
+
+sourceSets {
+    main.compileClasspath += configurations.provided
+    test.compileClasspath += configurations.provided
+    test.runtimeClasspath += configurations.provided
+}
+
+dependencies {
+    provided(
+            "javax.servlet:servlet-api:2.5",
+            "javax.servlet.jsp:jsp-api:2.1"
+    )
+
+    compile(
+            "org.springframework:spring-core:3.2.0.RELEASE",
+            "org.springframework:spring-web:3.2.0.RELEASE",
+            "org.springframework:spring-webmvc:3.2.0.RELEASE",
+            "org.springframework:spring-test:3.2.0.RELEASE",
+            "jstl:jstl:1.2",
+            "org.springframework.data:spring-data-jpa:1.2.0.RELEASE",
+            "org.json:json:20080701",
+            "joda-time:joda-time:2.2",
+            "commons-io:commons-io:2.4",
+            "com.google.guava:guava:r09",
+            "log4j:log4j:1.2.17",
+            "org.slf4j:slf4j-log4j12:1.7.5",
+    )
+    testCompile(
+            "junit:junit:4.+"
+    )
+}
