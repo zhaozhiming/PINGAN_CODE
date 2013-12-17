@@ -6,10 +6,26 @@
     <link type="text/css" rel="stylesheet" href="http://cdn.staticfile.org/semantic-ui/0.10.0/css/semantic.min.css">
 
     <script type="text/javascript" src="http://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript" src="http://cdn.staticfile.org/semantic-ui/0.10.0/javascript/semantic.min.js"></script>
+    <script type="text/javascript"
+            src="http://cdn.staticfile.org/semantic-ui/0.10.0/javascript/semantic.min.js"></script>
 
 </head>
 <body>
-message: <c:out value="${message}"/>
+
+<div class="ui form">
+    <div class="two fields">
+        <div class="field">
+            <div class="ui icon input">
+                <input type="text" placeholder="Search huge...">
+                <i class="search icon"></i>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="ui blue submit button">查询</div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
