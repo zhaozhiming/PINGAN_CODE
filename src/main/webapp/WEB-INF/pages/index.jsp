@@ -42,8 +42,13 @@
     </div>
 </div>
 
-<div id="sidebarBtn" class="ui black huge launch right attached button" style="width: 5%;">
-    <i class="icon list layout"></i>
+<div id="sidebarBtn" class="ui black huge vertical animated button" style="width: 7%;">
+    <div class="visible content">
+        <i class="icon list layout"></i>
+    </div>
+    <div class="hidden content">
+        菜单
+    </div>
 </div>
 
 <div class="ui grid">

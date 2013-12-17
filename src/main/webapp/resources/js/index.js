@@ -17,7 +17,7 @@ $(document).ready(function () {
     };
 
     var setting = {
-        onSuccess : function () {
+        onSuccess: function () {
             var searchUrl = $("#searchUrl").val();
             var data = {
                 searchKeyword: $("#searchKeyword").val()
@@ -26,7 +26,7 @@ $(document).ready(function () {
                 $("#result").show();
             });
         }
-    }
+    };
 
     $('#searchForm').form(rules, setting);
 });
