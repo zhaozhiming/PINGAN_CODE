@@ -4,6 +4,7 @@ build/**
 .gradle/**
 build/**
 out/**
+bin/**
 # Package Files #
 *.war
 *.ear
