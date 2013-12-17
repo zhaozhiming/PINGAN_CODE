@@ -8,9 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class MainController {
@@ -20,16 +19,16 @@ public class MainController {
     private String appKey;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(ModelMap model) throws Exception {
-        log.debug("index start");
-        model.put("message", "hello world");
+    public String index() throws Exception {
+        log.debug("welcome start");
         return "index";
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public String result(HttpServletRequest request, ModelMap model) throws Exception {
-        log.debug("result start");
-        log.debug("searchKeyword:" + request.getParameter("searchKeyword"));
+    public String result(@RequestParam("searchKeyword") String searchKeyword, ModelMap model) throws Exception {
+        log.debug("search start");
+        log.debug("searchKeyword:" + searchKeyword);
+        log.debug("search finish");
         return "index";
     }
 
