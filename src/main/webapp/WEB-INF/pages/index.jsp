@@ -13,6 +13,15 @@
 
 <input id="searchUrl" type="hidden" value="<c:url value='/search'/>">
 
+<div class="ui transparent inverted main menu">
+    <div class="container">
+        <a class="launch item" href="<c:url value='/'/>"><i class="icon list layout"></i> 首页</a>
+        <div class="title item">
+            <b>PAFA CODE</b>
+        </div>
+    </div>
+</div>
+
 <div class="ui grid">
     <div class="one wide column"></div>
 
