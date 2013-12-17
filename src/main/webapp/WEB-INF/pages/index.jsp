@@ -13,41 +13,49 @@
 
 <input id="searchUrl" type="hidden" value="<c:url value='/search'/>">
 
-<div class="ui form">
-    <div class="two fields">
-        <div class="field">
-            <div class="ui icon input">
-                <input type="text" placeholder="Search huge...">
-                <i class="search icon"></i>
+<div class="ui grid">
+    <div class="one wide column"></div>
+
+    <div class="fifteen wide column">
+        <div class="ui form">
+            <div class="two fields">
+                <div class="field">
+                    <div class="ui icon input">
+                        <input type="text" placeholder="请输入查询关键字...">
+                        <i class="search icon"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div id="searchBtn" class="ui blue submit button">查询</div>
+                </div>
             </div>
         </div>
 
-        <div class="field">
-            <div id="searchBtn" class="ui blue submit button">查询</div>
+        <div id="result" style="display: none">
+            <table class="ui table segment">
+                <thead>
+                <tr>
+                    <th>Jar包名</th>
+                    <th>版本</th>
+                    <th>路径</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Spring</td>
+                    <td>3.0</td>
+                    <td>org/springframework/stereotype/Controller</td>
+                </tr>
+                <tr>
+                    <td>Spring</td>
+                    <td>3.0</td>
+                    <td>org/springframework/stereotype/Controller</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-</div>
-
-<div id="result" style="display: none">
-    <table class="ui table segment">
-        <thead>
-        <tr><th>Jar包名</th>
-            <th>版本</th>
-            <th>路径</th>
-        </tr></thead>
-        <tbody>
-        <tr>
-            <td>Spring</td>
-            <td>3.0</td>
-            <td>org/springframework/stereotype/Controller</td>
-        </tr>
-        <tr>
-            <td>Spring</td>
-            <td>3.0</td>
-            <td>org/springframework/stereotype/Controller</td>
-        </tr>
-        </tbody>
-    </table>
 </div>
 
 </body>
