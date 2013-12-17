@@ -16,6 +16,7 @@
 <div class="ui transparent inverted main menu">
     <div class="container">
         <a class="launch item" href="<c:url value='/'/>"><i class="icon list layout"></i> 首页</a>
+
         <div class="title item">
             <b>PAFA CODE</b>
         </div>
@@ -66,6 +67,14 @@
                 </tbody>
             </table>
         </div>
+    </div>
+</div>
+
+<div class="ui divider"></div>
+
+<div class="ui inverted segment center aligned">
+    <div class="ui inverted horizontal relaxed divided tiny list">
+        <div class="item">Super-powered by 六脉神贱 ©2013-2015</div>
     </div>
 </div>
 
