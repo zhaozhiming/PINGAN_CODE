@@ -26,10 +26,6 @@ sourceSets {
 }
 
 dependencies {
-    provided(
-            "javax.servlet:servlet-api:2.5",
-            "javax.servlet.jsp:jsp-api:2.1"
-    )
 
     compile(
             "org.springframework:spring-core:3.2.0.RELEASE",
@@ -44,6 +40,8 @@ dependencies {
             "com.google.guava:guava:r09",
             "log4j:log4j:1.2.17",
             "org.slf4j:slf4j-log4j12:1.7.5",
+            "javax.servlet:servlet-api:2.5",
+            "javax.servlet.jsp:jsp-api:2.1"
     )
     testCompile(
             "junit:junit:4.+"
