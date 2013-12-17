@@ -5,7 +5,15 @@ build/**
 build/**
 out/**
 bin/**
+
 # Package Files #
 *.war
 *.ear
+
+#IDE Files
 *.iws
+*.ipr
+*.iml
+*.classpath
+*.project
+.settings/**
