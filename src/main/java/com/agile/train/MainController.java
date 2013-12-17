@@ -17,12 +17,17 @@ public class MainController {
     @Value("${appKey}")
     private String appKey;
 
-
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(ModelMap model) throws Exception {
         log.debug("index start");
         model.put("message", "hello world");
         return "index";
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String result(ModelMap model) throws Exception {
+        log.debug("result start");
+        return "result";
     }
 
     @RequestMapping(value = "/data", method = RequestMethod.GET)
