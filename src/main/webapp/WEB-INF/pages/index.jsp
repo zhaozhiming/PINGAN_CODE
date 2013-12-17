@@ -3,6 +3,7 @@
 
 <%@ page contentType="text/html; charset=UTF-8" %>
 <head>
+    <title>PAFA CODE</title>
     <link type="text/css" rel="stylesheet" href="<c:url value='/resources/css/semantic.min.css'/>">
 
     <script type="text/javascript" src="<c:url value='/resources/js/jquery-2.0.3.min.js'/>"></script>
@@ -21,6 +22,28 @@
             <b>PAFA CODE</b>
         </div>
     </div>
+</div>
+
+<div id="sidebar" class="ui large vertical inverted labeled icon sidebar menu">
+    <a class="item" href="<c:url value='/'/>">
+        <i class="red awesome home icon"></i> <b>主页</b>
+    </a>
+    <div>
+        <a class="item" href="#">
+            <i class="green cloud upload icon"></i>
+            <b>上传</b>
+        </a>
+    </div>
+    <div>
+        <a class="item" href="<c:url value='/'/>">
+            <i class="blue search icon"></i>
+            <b>搜索</b>
+        </a>
+    </div>
+</div>
+
+<div id="sidebarBtn" class="ui black huge launch right attached button" style="width: 5%;">
+    <i class="icon list layout"></i>
 </div>
 
 <div class="ui grid">
