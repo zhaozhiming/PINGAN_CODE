@@ -32,6 +32,8 @@
             </div>
         </div>
 
+        <div class="ui divider"></div>
+
         <div id="result" style="display: none">
             <table class="ui table segment">
                 <thead>
