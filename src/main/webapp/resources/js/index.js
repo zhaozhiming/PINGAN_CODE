@@ -15,7 +15,10 @@ $(document).ready(function () {
     var setting = {
         onSuccess : function () {
             var searchUrl = $("#searchUrl").val();
-            $.post(searchUrl, function (data) {
+            var data = {
+                searchKeyword: $("#searchKeyword").val()
+            };
+            $.post(searchUrl, data, function (data) {
                 $("#result").show();
             });
         }

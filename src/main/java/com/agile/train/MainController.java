@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class MainController {
     private static final Log log = LogFactory.getLog(MainController.class);
@@ -25,8 +27,9 @@ public class MainController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public String result(ModelMap model) throws Exception {
+    public String result(HttpServletRequest request, ModelMap model) throws Exception {
         log.debug("result start");
+        log.debug("searchKeyword:" + request.getParameter("searchKeyword"));
         return "index";
     }
 

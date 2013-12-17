@@ -31,7 +31,7 @@
             <div class="two fields">
                 <div class="field">
                     <div class="ui icon input">
-                        <input type="text" name="searchKeyword" placeholder="请输入查询关键字...">
+                        <input id="searchKeyword" type="text" name="searchKeyword" placeholder="请输入查询关键字...">
                         <i class="search icon"></i>
                     </div>
                 </div>
