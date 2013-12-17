@@ -20,10 +20,10 @@ public class MainController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() throws Exception {
-        log.debug("welcome start");
-        return "index";
+        log.debug("welcome start ");
+        return "index"; 
     }
-
+    
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String result(@RequestParam("searchKeyword") String searchKeyword, ModelMap model) throws Exception {
         log.debug("search start");
