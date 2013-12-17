@@ -3,11 +3,10 @@
 
 <%@ page contentType="text/html; charset=UTF-8" %>
 <head>
-    <link type="text/css" rel="stylesheet" href="<c:out value='/css/semantic.min.css'/>">
+    <link type="text/css" rel="stylesheet" href="<c:url value='/resources/css/semantic.min.css'/>">
 
-    <script type="text/javascript" src="<c:out value='/js/jquery.min.js'/>"></script>
-    <script type="text/javascript" src="<c:out value='/js/semantic.min.js'/>"></script>
-
+    <script type="text/javascript" src="<c:url value='/resources/js/jquery-2.0.3.min.js'/>"></script>
+    <script type="text/javascipt" src="<c:url value='/resources/js/semantic.min.js'/>"></script>
 </head>
 <body>
 
