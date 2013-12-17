@@ -24,7 +24,7 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String result(ModelMap model) throws Exception {
         log.debug("result start");
         return "result";
