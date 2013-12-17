@@ -27,11 +27,11 @@
     <div class="one wide column"></div>
 
     <div class="fifteen wide column">
-        <div class="ui form">
+        <div id="searchForm" class="ui form">
             <div class="two fields">
                 <div class="field">
                     <div class="ui icon input">
-                        <input type="text" placeholder="请输入查询关键字...">
+                        <input type="text" name="searchKeyword" placeholder="请输入查询关键字...">
                         <i class="search icon"></i>
                     </div>
                 </div>
@@ -40,6 +40,7 @@
                     <div id="searchBtn" class="ui blue submit button">查询</div>
                 </div>
             </div>
+            <div class="ui error message"></div>
         </div>
 
         <div class="ui divider"></div>
