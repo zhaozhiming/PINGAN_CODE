@@ -32,44 +32,37 @@ $(document).ready(function () {
     };
     $('#searchForm').form(rules, setting);
 
+    function updateList(content) {
+
+        $("#result").show();
+
+        var list = eval(content);
+        $('#resultList').html('');
+
+        for (var i = 0; i < list.length; i++) {
+            var $tr = $('<tr>');
+
+            $tr.attr('jarName', list[i].jarName);
+            $tr.attr('version', list[i].version);
+            $tr.attr('path', list[i].path);
+
+            $tr.append($('<td>').text(list[i].jarName));
+            $tr.append($('<td>').text(list[i].version));
+            $tr.append($('<td>').text(list[i].path));
+
+            $tr.click(function () {
+                alert($(this).attr('jarName'));
+            });
+
+            $tr.hover(function () {
+                $(this).toggleClass("negative");
+            });
+
+            $('#resultList').append($tr);
+        }
+    }
+
+
 });
 
-function updateList(content) {
 
-    $("#result").show();
-
-    var list = eval(content);
-
-    $('#resultList').html('');
-
-    for (var i = 0; i < list.length; i++) {
-
-        var $tr = $('<tr>');
-
-        $tr.attr('jarName', list[i].jarName);
-
-        $tr.attr('version', list[i].version);
-
-        $tr.attr('path', list[i].path);
-
-        $tr.append($('<td>').text(list[i].jarName));
-
-        $tr.append($('<td>').text(list[i].version));
-
-        $tr.append($('<td>').text(list[i].path));
-
-        $tr.click(function () {
-            alert($(this).attr('jarName'));
-        });
-
-        $tr.hover(function () {
-
-            $(this).toggleClass("negative");
-
-        });
-
-        $('#resultList').append($tr);
-    }
-}
-
- 

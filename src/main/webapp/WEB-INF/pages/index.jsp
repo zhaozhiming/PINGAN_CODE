@@ -83,16 +83,6 @@
                 </tr>
                 </thead>
                 <tbody id="resultList">
-                <tr>
-                    <td>Spring</td>
-                    <td>3.0</td>
-                    <td>org/springframework/stereotype/Controller</td>
-                </tr>
-                <tr>
-                    <td>Spring</td>
-                    <td>3.0</td>
-                    <td>org/springframework/stereotype/Controller</td>
-                </tr>
                 </tbody>
             </table>
         </div>
