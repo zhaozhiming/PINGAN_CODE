@@ -45,7 +45,8 @@ $(document).ready(function () {
             resultContent += "<td>" + result[i].jarName + "</td>";
             resultContent += "<td>" + result[i].version + "</td>";
             resultContent += "<td><a class='item' title='点击查看源码' target='_blank' href='";
-            resultContent += $("#showUrl").val() + "?path=" + result[i].path + "'>" + result[i].path + "</a></td>";
+            resultContent += $("#showUrl").val() + "?jarName=" + result[i].jarName + "&path=";
+            resultContent += result[i].path + "'>" + result[i].path + "</a></td>";
             resultContent += "</tr>";
         }
 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.File;
 import java.util.List;
 
 @Controller
@@ -54,11 +55,14 @@ public class MainController {
     }
 
     @RequestMapping(value = "/show", method = RequestMethod.GET)
-    public String show(@RequestParam("path") String path,
+    public String show(@RequestParam("jarName") String jarName,
+                       @RequestParam("path") String path,
                        ModelMap model) throws Exception {
         log.debug("show start");
-        String repository = repositoryName;
-        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(repository, path);
+        log.debug("jarName:" + jarName);
+        log.debug("path:" + path);
+        String jarFileName = repositoryName + File.separator + jarName;
+        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(jarFileName, path);
         model.put("sourceCode", sourceCode);
         log.debug("show finish");
         return "show";
