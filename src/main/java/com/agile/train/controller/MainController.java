@@ -35,7 +35,7 @@ public class MainController {
         log.debug("search start");
         log.debug("searchKeyword:" + searchKeyword);
         log.debug("repositoryName:" + repositoryName);
-        List<String> result = PinganCodeUtil.searchFile(repositoryName, searchKeyword);
+        List<String> result = PinganCodeUtil.searchFileInRepositoryByKeyword(repositoryName, searchKeyword);
 
         JSONArray resultArrayJson = new JSONArray();
         for (String path : result) {
@@ -55,7 +55,7 @@ public class MainController {
                        ModelMap model) throws Exception {
         log.debug("show start");
         String repository = repositoryName;
-        String sourceCode = PinganCodeUtil.loadZipFile(repository, path);
+        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(repository, path);
         model.put("sourceCode", sourceCode);
         log.debug("show finish");
         return "show";

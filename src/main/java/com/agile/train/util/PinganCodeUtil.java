@@ -1,68 +1,78 @@
 package com.agile.train.util;
 
+import com.google.common.collect.Lists;
+import org.apache.commons.io.IOUtils;
+
 import java.io.*;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class PinganCodeUtil {
 
-    public static String loadZipFile(String zipname, String name) throws IOException {
-
-        StringBuffer sb = new StringBuffer();
+    public static String readSourceCodeByFileNameInJar(String jarFileName, String fileName) throws IOException {
+        ZipInputStream jarFileInputStream = null;
         try {
-            ZipInputStream zin = new ZipInputStream(new FileInputStream(zipname));
+            jarFileInputStream = new ZipInputStream(new FileInputStream(jarFileName));
+            StringBuilder result = readSourceFileInJar(fileName, jarFileInputStream);
+            jarFileInputStream.closeEntry();
+            IOUtils.closeQuietly(jarFileInputStream);
+            return result.toString();
+        } finally {
+            IOUtils.closeQuietly(jarFileInputStream);
+        }
+    }
+
+    private static StringBuilder readSourceFileInJar(String fileName, ZipInputStream jarFileInputStream) throws IOException {
+        StringBuilder result = new StringBuilder();
+        ZipEntry entry;
+        while ((entry = jarFileInputStream.getNextEntry()) != null) {
+            if (!entry.getName().equals(fileName)) continue;
+
+            BufferedReader sourceCode = new BufferedReader(new InputStreamReader(jarFileInputStream));
+
+            String line;
+            while ((line = sourceCode.readLine()) != null)
+                result.append(line).append("\n");
+
+            break;
+        }
+        return result;
+    }
+
+    public static List<String> searchFileInRepositoryByKeyword(String repositoryPath, String searchKeyword) throws IOException {
+        File repository = new File(repositoryPath);
+        File[] files = repository.listFiles();
+
+        if (files == null) return Collections.emptyList();
+
+        List<String> result = Lists.newArrayList();
+        for (File file : files) {
+            if (file.isDirectory()) continue;
+
+            result.addAll(searchFileInJarByKeyword(file, searchKeyword));
+        }
+
+        return result;
+    }
+
+    private static List<String> searchFileInJarByKeyword(File jarFile, String searchKeyword) throws IOException {
+        ZipInputStream input = null;
+        try {
+            List<String> result = Lists.newArrayList();
+            input = new ZipInputStream(new FileInputStream(jarFile));
             ZipEntry entry;
-            //System.out.println("");
-            while ((entry = zin.getNextEntry()) != null) {
-                if (entry.getName().equals(name)) {
-                    BufferedReader in = new BufferedReader(new InputStreamReader(zin));
-                    String s = null;
-                    while ((s = in.readLine()) != null)
-                        //System.out.println(s + "\n");
-                        sb.append(s).append("\n");
+            while ((entry = input.getNextEntry()) != null) {
+                if (entry.getName().endsWith(".java") && entry.getName().contains(searchKeyword)) {
+                    result.add(entry.getName());
                 }
-                zin.closeEntry();
             }
-            zin.close();
-            return sb.toString();
-        } catch (IOException e) {
-            throw e;
+            IOUtils.closeQuietly(input);
+            return result;
+        } finally {
+            IOUtils.closeQuietly(input);
         }
-    }
-
-    public static List<String> searchFile(String JarFileName, String searchKeyword) throws IOException{
-        List<String> list = getZipFileList(JarFileName);
-        List<String> resultList = new ArrayList<String>();
-        for (int i = 0; i < list.size(); i++) {
-            String fileName = list.get(i);
-            if(fileName.indexOf(searchKeyword)!= -1){
-                resultList.add(list.get(i));
-            }
-        }
-        return resultList;
-    }
-
-    /**
-     * @throws FileNotFoundException
-     * @throws IOException
-     */
-    private static List<String> getZipFileList(String fileName) throws FileNotFoundException,
-            IOException {
-        List<String> list = new ArrayList<String>();
-        File file = new File(fileName);
-        ZipInputStream input = null;         // 定义压缩输入流
-        input = new ZipInputStream(new  FileInputStream(file));
-        ZipEntry entry;                                        // 实例化压缩输入流
-        while ((entry = input.getNextEntry()) != null) {
-            if(entry.getName().endsWith(".java")){
-                //System.out.println("压缩实体名称：" +  entry.getName()) ;
-                list.add(entry.getName());
-            }
-        }
-        input.close();                    // 关闭压缩输入流
-        return list;
     }
 
 }

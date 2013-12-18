@@ -9,19 +9,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 public class PinganCodeUtilTest {
-    String jarFileName = "test-repository/cglib-2.2-sources.jar";
-    String searchKeyword = "BeanCopier";
-    String contentFileName = "net/sf/cglib/beans/BeanCopier.java";
 
     @Test
     public void testLoadZipFile() throws Exception {
-        String sourceCode = PinganCodeUtil.loadZipFile(jarFileName, contentFileName);
+        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(
+                "test-repository/cglib-2.2-sources.jar", "net/sf/cglib/beans/BeanCopier.java");
         assertNotNull(sourceCode);
+        assertThat(sourceCode.contains("public class BeanCopier"), is(true));
     }
 
     @Test
     public void testSearchFile() throws Exception {
-        List<String> result = PinganCodeUtil.searchFile(jarFileName, searchKeyword);
+        List<String> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "BeanCopier");
         assertThat(result.size(), is(1));
         assertThat(result.get(0), is("net/sf/cglib/beans/BeanCopier.java"));
     }
