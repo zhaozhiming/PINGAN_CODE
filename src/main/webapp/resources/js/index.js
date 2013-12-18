@@ -24,61 +24,40 @@ $(document).ready(function () {
             };
 
             $.post(searchUrl, data, function (data) {
-                updateList(data);
+                test(data);
             });
         }
     };
+
     $('#searchForm').form(rules, setting);
 
-    function updateList(content) {
+    function test(data) {
+        var result = jQuery.parseJSON(data);
 
-        $("#result").show();
-
-        $('#resultList').html('');
-        var list = eval(content);
-
-        for (var i = 0; i < list.length; i++) {
-            var $tr = $('<tr>');
-
-            $tr.attr('jarName', list[i].jarName);
-            $tr.attr('version', list[i].version);
-            $tr.attr('path', list[i].path);
-
-            $tr.append($('<td>').text(list[i].jarName));
-            $tr.append($('<td>').text(list[i].version));
-            $tr.append($('<td>').text(list[i].path));
-
-            $tr.click(function () {
-
-                var url = $("#showUrl").val();
-                var data = {
-                    jarName: $(this).attr('jarName'),
-                    version: $(this).attr('version'),
-                    path: $(this).attr('path')
-                };
-
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: data,
-                    async: false,
-                    success: function(data){
-                        var win = window.open();
-                        win.document.write(data);
-                    }
-                });
-
-            });
-
-            $tr.hover(function () {
-                $(this).toggleClass("negative");
-            });
-
-            $('#resultList').append($tr);
+        if (result.length === 0) {
+            $("#result").html("无符合条件的源文件，请重新查询");
+            return;
         }
+
+        var resultContent = "<div class='ui animated celled large list'>";
+
+        for (var i = 0; i < result.length; i++) {
+            console.log(result[i]);
+            resultContent += "<div class='item'>";
+            resultContent += "<img class='ui avatar image' src='" + $("#sourceCodeImageUrl").val() + "'>";
+            resultContent += "<div class='content'>";
+            resultContent += "<a class='header' title='点击查看源码'>" + result[i].path + "</a>";
+            resultContent += "<div class='description'>";
+            resultContent += result[i].jarName + " v" + result[i].version;
+            resultContent += "</div>";
+            resultContent += "</div>";
+            resultContent += "</div>";
+        }
+        resultContent += "</div>";
+
+        $('#result').html(resultContent);
+
     }
-
-
 });
 
 

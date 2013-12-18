@@ -14,6 +14,7 @@
 
 <input id="searchUrl" type="hidden" value="<c:url value='/search'/>">
 <input id="showUrl" type="hidden" value="<c:url value='/show'/>">
+<input id="sourceCodeImageUrl" type="hidden" value="<c:url value='/resources/images/source_code.jpg'/>">
 
 <div class="ui transparent inverted main menu">
     <div class="container">
@@ -74,19 +75,7 @@
 
         <div class="ui divider"></div>
 
-        <div id="result" style="display: none">
-            <table class="ui table segment">
-                <thead>
-                <tr>
-                    <th>Jar包名</th>
-                    <th>版本</th>
-                    <th>路径</th>
-                </tr>
-                </thead>
-                <tbody id="resultList">
-                </tbody>
-            </table>
-        </div>
+        <div id="result"></div>
     </div>
 </div>
 
