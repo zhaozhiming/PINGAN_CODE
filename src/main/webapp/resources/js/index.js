@@ -24,14 +24,14 @@ $(document).ready(function () {
             };
 
             $.post(searchUrl, data, function (data) {
-                test(data);
+                showResult(data);
             });
         }
     };
 
     $('#searchForm').form(rules, setting);
 
-    function test(data) {
+    function showResult(data) {
         var result = jQuery.parseJSON(data);
 
         if (result.length === 0) {
@@ -46,7 +46,8 @@ $(document).ready(function () {
             resultContent += "<div class='item'>";
             resultContent += "<img class='ui avatar image' src='" + $("#sourceCodeImageUrl").val() + "'>";
             resultContent += "<div class='content'>";
-            resultContent += "<a class='header' title='点击查看源码'>" + result[i].path + "</a>";
+            resultContent += "<a class='header' title='点击查看源码' target='_blank' href='";
+            resultContent += $("#showUrl").val() + "?path=" + result[i].path + "'>" + result[i].path + "</a>";
             resultContent += "<div class='description'>";
             resultContent += result[i].jarName + " v" + result[i].version;
             resultContent += "</div>";
@@ -56,7 +57,6 @@ $(document).ready(function () {
         resultContent += "</div>";
 
         $('#result').html(resultContent);
-
     }
 });
 
