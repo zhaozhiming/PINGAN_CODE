@@ -2,11 +2,9 @@ package com.agile.train.controller;
 
 import com.agile.train.dto.SourceFile;
 import com.agile.train.util.PinganCodeUtil;
-import com.google.common.base.Strings;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -38,20 +36,14 @@ public class MainController {
         log.debug("search start");
         log.debug("searchKeyword:" + searchKeyword);
         log.debug("repositoryName:" + repositoryName);
-        List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword(repositoryName, searchKeyword);
 
-        JSONArray resultArrayJson = new JSONArray();
-        for (SourceFile sourceFile : result) {
-            JSONObject resultJsonObject = new JSONObject();
-            resultJsonObject.put("jarName", sourceFile.getJarName());
-            resultJsonObject.put("version", Strings.isNullOrEmpty(
-                    sourceFile.getVersion()) ? "unknown" : sourceFile.getVersion());
-            resultJsonObject.put("path", sourceFile.getPath());
-            resultArrayJson.put(resultJsonObject);
-        }
-        log.debug("resultArrayJson:" + resultArrayJson.toString());
+        List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword(repositoryName, searchKeyword);
+        ObjectMapper mapper = new ObjectMapper();
+        String resultArrayJson = mapper.writeValueAsString(result);
+
+        log.debug("resultArrayJson:" + resultArrayJson);
         log.debug("search finish");
-        return resultArrayJson.toString();
+        return resultArrayJson;
     }
 
     @RequestMapping(value = "/show", method = RequestMethod.GET)
