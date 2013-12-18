@@ -6,6 +6,9 @@ import org.apache.commons.io.IOUtils;
 import java.io.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -60,8 +63,8 @@ public class PinganCodeUtil {
     private static List<String> searchFileInJarByKeyword(File jarFile, String searchKeyword) throws IOException {
         ZipInputStream jarFileInputStream = null;
         try {
-            List<String> result = Lists.newArrayList();
             jarFileInputStream = new ZipInputStream(new FileInputStream(jarFile));
+            List<String> result = Lists.newArrayList();
             ZipEntry entry;
             while ((entry = jarFileInputStream.getNextEntry()) != null) {
                 if (entry.getName().endsWith(".java") && entry.getName().contains(searchKeyword)) {
@@ -75,4 +78,30 @@ public class PinganCodeUtil {
         }
     }
 
+
+    public static String retrieveVersionInJar(String jarFileName) throws IOException {
+        JarFile jar = null;
+        try {
+            jar = new JarFile(new File(jarFileName));
+            Manifest manifest = jar.getManifest();
+
+            String version = "";
+            Attributes attributes = manifest.getMainAttributes();
+            if (attributes != null) {
+                for (Object o : attributes.keySet()) {
+                    Attributes.Name key = (Attributes.Name) o;
+                    String keyword = key.toString();
+                    if (keyword.equals("Implementation-Version") || keyword.equals("Bundle-Version")) {
+                        version = (String) attributes.get(key);
+                        break;
+                    }
+                }
+            }
+            jar.close();
+
+            return version;
+        } finally {
+            if (jar != null) jar.close();
+        }
+    }
 }

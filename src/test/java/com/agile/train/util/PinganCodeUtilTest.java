@@ -33,4 +33,10 @@ public class PinganCodeUtilTest {
         assertThat(result.contains("org/apache/commons/logging/LogSource.java"), is(true));
     }
 
+    @Test
+    public void should_retrieve_version_when_search_jar_file() throws Exception {
+        assertThat(PinganCodeUtil.retrieveVersionInJar("test-repository/cglib-2.2-sources.jar"), is(""));
+        assertThat(PinganCodeUtil.retrieveVersionInJar("test-repository/commons-logging-1.1.1-sources.jar"), is(""));
+    }
+
 }
