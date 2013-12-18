@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,8 +18,8 @@ import java.util.List;
 public class MainController {
     private static final Log log = LogFactory.getLog(MainController.class);
 
-    @Value("${respositoryName}")
-    private String respositoryName;
+    @Value("${repositoryName}")
+    private String repositoryName;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() throws Exception {
@@ -31,14 +30,14 @@ public class MainController {
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public
     @ResponseBody
-    String result(@RequestParam("searchKeyword") String searchKeyword, ModelMap model) throws Exception {
+    String result(@RequestParam("searchKeyword") String searchKeyword) throws Exception {
         log.debug("search start");
         log.debug("searchKeyword:" + searchKeyword);
-        List<String> result = PafaCodeUtil.searchFile(respositoryName, searchKeyword);
+        log.debug("repositoryName:" + repositoryName);
+        List<String> result = PafaCodeUtil.searchFile(repositoryName, searchKeyword);
 
         JSONArray resultArrayJson = new JSONArray();
         for (String path : result) {
-
             JSONObject resultJsonObject = new JSONObject();
             resultJsonObject.put("jarName", "cglib-2.2-sources.jar");
             resultJsonObject.put("version", "1.0");
@@ -50,21 +49,4 @@ public class MainController {
         return resultArrayJson.toString();
     }
 
-    @RequestMapping(value = "/data", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    String data() throws Exception {
-        JSONObject result = new JSONObject();
-        result.put("message", "hello world");
-        return result.toString();
-    }
-
-    @RequestMapping(value = "/property", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    String property() throws Exception {
-        JSONObject result = new JSONObject();
-        result.put("property", respositoryName);
-        return result.toString();
-    }
 }
