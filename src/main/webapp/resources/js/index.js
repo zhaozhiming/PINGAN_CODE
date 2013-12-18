@@ -25,6 +25,10 @@ $(document).ready(function () {
 
             $.post(searchUrl, data, function (data) {
                 showResult(data);
+
+                $("tr").hover(function () {
+                    $(this).toggleClass("positive");
+                });
             });
         }
     };
@@ -33,28 +37,17 @@ $(document).ready(function () {
 
     function showResult(data) {
         var result = jQuery.parseJSON(data);
-
-        if (result.length === 0) {
-            $("#result").html("无符合条件的源文件，请重新查询");
-            return;
-        }
-
-        var resultContent = "<div class='ui animated celled large list'>";
+        var resultContent = "";
 
         for (var i = 0; i < result.length; i++) {
             console.log(result[i]);
-            resultContent += "<div class='item'>";
-            resultContent += "<img class='ui avatar image' src='" + $("#sourceCodeImageUrl").val() + "'>";
-            resultContent += "<div class='content'>";
-            resultContent += "<a class='header' title='点击查看源码' target='_blank' href='";
-            resultContent += $("#showUrl").val() + "?path=" + result[i].path + "'>" + result[i].path + "</a>";
-            resultContent += "<div class='description'>";
-            resultContent += result[i].jarName + " v" + result[i].version;
-            resultContent += "</div>";
-            resultContent += "</div>";
-            resultContent += "</div>";
+            resultContent += "<tr>";
+            resultContent += "<td>" + result[i].jarName + "</td>";
+            resultContent += "<td>" + result[i].version + "</td>";
+            resultContent += "<td><a class='item' title='点击查看源码' target='_blank' href='";
+            resultContent += $("#showUrl").val() + "?path=" + result[i].path + "'>" + result[i].path + "</a></td>";
+            resultContent += "</tr>";
         }
-        resultContent += "</div>";
 
         $('#result').html(resultContent);
     }

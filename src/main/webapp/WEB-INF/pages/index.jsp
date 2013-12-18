@@ -14,7 +14,6 @@
 
 <input id="searchUrl" type="hidden" value="<c:url value='/search'/>">
 <input id="showUrl" type="hidden" value="<c:url value='/show'/>">
-<input id="sourceCodeImageUrl" type="hidden" value="<c:url value='/resources/images/source_code.jpg'/>">
 
 <div class="ui transparent inverted main menu">
     <div class="container">
@@ -30,6 +29,7 @@
     <a class="item" href="<c:url value='/'/>">
         <i class="red awesome home icon"></i> <b>主页</b>
     </a>
+
     <div>
         <a class="item" href="#">
             <i class="green cloud upload icon"></i>
@@ -75,7 +75,17 @@
 
         <div class="ui divider"></div>
 
-        <div id="result"></div>
+        <table class="ui table segment">
+            <thead>
+            <tr>
+                <th>Jar包名</th>
+                <th>版本</th>
+                <th>路径</th>
+            </tr>
+            </thead>
+            <tbody id="result">
+            </tbody>
+        </table>
     </div>
 </div>
 
