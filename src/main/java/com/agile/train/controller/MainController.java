@@ -1,6 +1,6 @@
 package com.agile.train.controller;
 
-import com.agile.train.util.PafaCodeUtil;
+import com.agile.train.util.PinganCodeUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
@@ -35,7 +35,7 @@ public class MainController {
         log.debug("search start");
         log.debug("searchKeyword:" + searchKeyword);
         log.debug("repositoryName:" + repositoryName);
-        List<String> result = PafaCodeUtil.searchFile(repositoryName, searchKeyword);
+        List<String> result = PinganCodeUtil.searchFile(repositoryName, searchKeyword);
 
         JSONArray resultArrayJson = new JSONArray();
         for (String path : result) {
@@ -55,7 +55,7 @@ public class MainController {
                        ModelMap model) throws Exception {
         log.debug("show start");
         String repository = repositoryName;
-        String sourceCode = PafaCodeUtil.loadZipFile(repository, path);
+        String sourceCode = PinganCodeUtil.loadZipFile(repository, path);
         model.put("sourceCode", sourceCode);
         log.debug("show finish");
         return "show";

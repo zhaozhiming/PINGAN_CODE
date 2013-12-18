@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class PafaCodeUtil {
+public class PinganCodeUtil {
 
     public static String loadZipFile(String zipname, String name) throws IOException {
 

@@ -3,7 +3,7 @@
 
 <%@ page contentType="text/html; charset=UTF-8" %>
 <head>
-    <title>PAFA CODE</title>
+    <title>PINGAN CODE</title>
     <link type="text/css" rel="stylesheet" href="<c:url value='/resources/css/semantic.min.css'/>">
 
     <script type="text/javascript" src="<c:url value='/resources/js/jquery-2.0.3.min.js'/>"></script>
@@ -20,7 +20,7 @@
         <a class="launch item" href="<c:url value='/'/>"><i class="icon list layout"></i> 首页</a>
 
         <div class="title item">
-            <b>PAFA CODE</b>
+            <b>PINGAN CODE</b>
         </div>
     </div>
 </div>
