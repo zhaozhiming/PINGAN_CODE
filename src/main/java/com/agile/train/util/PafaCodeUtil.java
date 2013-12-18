@@ -32,12 +32,12 @@ public class PafaCodeUtil {
         }
     }
 
-    public static List<String> searchFile(String zipFileName, String searchClassName) throws FileNotFoundException, IOException{
-        List<String> list = getZipFileList(zipFileName);
+    public static List<String> searchFile(String JarFileName, String searchKeyword) throws IOException{
+        List<String> list = getZipFileList(JarFileName);
         List<String> resultList = new ArrayList<String>();
         for (int i = 0; i < list.size(); i++) {
-            String fileName = (String)list.get(i);
-            if(fileName.indexOf(searchClassName)!= -1){
+            String fileName = list.get(i);
+            if(fileName.indexOf(searchKeyword)!= -1){
                 resultList.add(list.get(i));
             }
         }

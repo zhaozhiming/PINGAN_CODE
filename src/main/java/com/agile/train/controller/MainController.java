@@ -1,4 +1,4 @@
-package com.agile.train;
+package com.agile.train.controller;
 
 import com.agile.train.util.PafaCodeUtil;
 import org.apache.commons.logging.Log;
