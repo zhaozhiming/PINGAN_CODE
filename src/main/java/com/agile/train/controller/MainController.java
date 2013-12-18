@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,9 +25,9 @@ public class MainController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() throws Exception {
         log.debug("welcome start ");
-        return "index"; 
+        return "index";
     }
-    
+
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -47,6 +48,17 @@ public class MainController {
         log.debug("resultArrayJson:" + resultArrayJson.toString());
         log.debug("search finish");
         return resultArrayJson.toString();
+    }
+
+    @RequestMapping(value = "/show", method = RequestMethod.GET)
+    public String show(@RequestParam("path") String path,
+                       ModelMap model) throws Exception {
+        log.debug("show start");
+        String repository = repositoryName;
+        String sourceCode = PafaCodeUtil.loadZipFile(repository, path);
+        model.put("sourceCode", sourceCode);
+        log.debug("show finish");
+        return "show";
     }
 
 }

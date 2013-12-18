@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-
     $('#sidebarBtn').click(function () {
         $('#sidebar').sidebar('toggle');
     });
@@ -16,7 +15,6 @@ $(document).ready(function () {
             ]
         }
     };
-
 
     var setting = {
         onSuccess: function () {
@@ -36,8 +34,8 @@ $(document).ready(function () {
 
         $("#result").show();
 
-        var list = eval(content);
         $('#resultList').html('');
+        var list = eval(content);
 
         for (var i = 0; i < list.length; i++) {
             var $tr = $('<tr>');
@@ -51,7 +49,25 @@ $(document).ready(function () {
             $tr.append($('<td>').text(list[i].path));
 
             $tr.click(function () {
-                alert($(this).attr('jarName'));
+
+                var url = $("#showUrl").val();
+                var data = {
+                    jarName: $(this).attr('jarName'),
+                    version: $(this).attr('version'),
+                    path: $(this).attr('path')
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    async: false,
+                    success: function(data){
+                        var win = window.open();
+                        win.document.write(data);
+                    }
+                });
+
             });
 
             $tr.hover(function () {

@@ -13,6 +13,7 @@
 <body>
 
 <input id="searchUrl" type="hidden" value="<c:url value='/search'/>">
+<input id="showUrl" type="hidden" value="<c:url value='/show'/>">
 
 <div class="ui transparent inverted main menu">
     <div class="container">
