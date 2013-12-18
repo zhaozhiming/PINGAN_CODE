@@ -1,6 +1,8 @@
 package com.agile.train.controller;
 
+import com.agile.train.dto.SourceFile;
 import com.agile.train.util.PinganCodeUtil;
+import com.google.common.base.Strings;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
@@ -35,14 +37,15 @@ public class MainController {
         log.debug("search start");
         log.debug("searchKeyword:" + searchKeyword);
         log.debug("repositoryName:" + repositoryName);
-        List<String> result = PinganCodeUtil.searchFileInRepositoryByKeyword(repositoryName, searchKeyword);
+        List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword(repositoryName, searchKeyword);
 
         JSONArray resultArrayJson = new JSONArray();
-        for (String path : result) {
+        for (SourceFile sourceFile : result) {
             JSONObject resultJsonObject = new JSONObject();
-            resultJsonObject.put("jarName", "cglib-2.2-sources.jar");
-            resultJsonObject.put("version", "1.0");
-            resultJsonObject.put("path", path);
+            resultJsonObject.put("jarName", sourceFile.getJarName());
+            resultJsonObject.put("version", Strings.isNullOrEmpty(
+                    sourceFile.getVersion()) ? "unknown" : sourceFile.getVersion());
+            resultJsonObject.put("path", sourceFile.getPath());
             resultArrayJson.put(resultJsonObject);
         }
         log.debug("resultArrayJson:" + resultArrayJson.toString());

@@ -1,5 +1,6 @@
 package com.agile.train.util;
 
+import com.agile.train.dto.SourceFile;
 import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
 
@@ -44,13 +45,13 @@ public class PinganCodeUtil {
         return result;
     }
 
-    public static List<String> searchFileInRepositoryByKeyword(String repositoryPath, String searchKeyword) throws IOException {
+    public static List<SourceFile> searchFileInRepositoryByKeyword(String repositoryPath, String searchKeyword) throws IOException {
         File repository = new File(repositoryPath);
         File[] files = repository.listFiles();
 
         if (files == null || files.length == 0) return Collections.emptyList();
 
-        List<String> result = Lists.newArrayList();
+        List<SourceFile> result = Lists.newArrayList();
         for (File file : files) {
             if (file.isDirectory()) continue;
 
@@ -60,15 +61,16 @@ public class PinganCodeUtil {
         return result;
     }
 
-    private static List<String> searchFileInJarByKeyword(File jarFile, String searchKeyword) throws IOException {
+    private static List<SourceFile> searchFileInJarByKeyword(File jarFile, String searchKeyword) throws IOException {
         ZipInputStream jarFileInputStream = null;
         try {
             jarFileInputStream = new ZipInputStream(new FileInputStream(jarFile));
-            List<String> result = Lists.newArrayList();
+            List<SourceFile> result = Lists.newArrayList();
             ZipEntry entry;
             while ((entry = jarFileInputStream.getNextEntry()) != null) {
-                if (entry.getName().endsWith(".java") && entry.getName().contains(searchKeyword)) {
-                    result.add(entry.getName());
+                String path = entry.getName();
+                if (path.endsWith(".java") && path.contains(searchKeyword)) {
+                    result.add(new SourceFile(jarFile.getName(), retrieveVersionInJar(jarFile), path));
                 }
             }
             IOUtils.closeQuietly(jarFileInputStream);
@@ -79,10 +81,10 @@ public class PinganCodeUtil {
     }
 
 
-    public static String retrieveVersionInJar(String jarFileName) throws IOException {
+    public static String retrieveVersionInJar(File jarFile) throws IOException {
         JarFile jar = null;
         try {
-            jar = new JarFile(new File(jarFileName));
+            jar = new JarFile(jarFile);
             Manifest manifest = jar.getManifest();
 
             String version = "";

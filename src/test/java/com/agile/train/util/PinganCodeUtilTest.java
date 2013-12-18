@@ -1,7 +1,9 @@
 package com.agile.train.util;
 
+import com.agile.train.dto.SourceFile;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -20,23 +22,23 @@ public class PinganCodeUtilTest {
 
     @Test
     public void should_search_file_in_repository_by_keyword_return_1_file_when_when_have_1_jar() throws Exception {
-        List<String> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "BeanCopier");
+        List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "BeanCopier");
         assertThat(result.size(), is(1));
-        assertThat(result.get(0), is("net/sf/cglib/beans/BeanCopier.java"));
+        assertThat(result.get(0).getPath(), is("net/sf/cglib/beans/BeanCopier.java"));
     }
 
     @Test
     public void should_search_file_in_repository_by_keyword_return_more_files_when_when_have_many_jars() throws Exception {
-        List<String> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "Log");
+        List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "Log");
         assertThat(result.size(), is(16));
-        assertThat(result.contains("org/slf4j/impl/Log4jLoggerAdapter.java"), is(true));
-        assertThat(result.contains("org/apache/commons/logging/LogSource.java"), is(true));
+        assertThat(result.get(0).getPath(), is("org/slf4j/impl/Log4jLoggerAdapter.java"));
+        assertThat(result.get(result.size() - 1).getPath(), is("org/apache/commons/logging/LogSource.java"));
     }
 
     @Test
     public void should_retrieve_version_when_search_jar_file() throws Exception {
-        assertThat(PinganCodeUtil.retrieveVersionInJar("test-repository/cglib-2.2-sources.jar"), is(""));
-        assertThat(PinganCodeUtil.retrieveVersionInJar("test-repository/commons-logging-1.1.1-sources.jar"), is(""));
+        assertThat(PinganCodeUtil.retrieveVersionInJar(new File("test-repository/cglib-2.2-sources.jar")), is(""));
+        assertThat(PinganCodeUtil.retrieveVersionInJar(new File("test-repository/commons-logging-1.1.1-sources.jar")), is(""));
     }
 
 }
