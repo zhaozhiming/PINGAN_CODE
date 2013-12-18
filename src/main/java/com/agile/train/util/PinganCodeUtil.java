@@ -45,7 +45,7 @@ public class PinganCodeUtil {
         File repository = new File(repositoryPath);
         File[] files = repository.listFiles();
 
-        if (files == null) return Collections.emptyList();
+        if (files == null || files.length == 0) return Collections.emptyList();
 
         List<String> result = Lists.newArrayList();
         for (File file : files) {
@@ -58,20 +58,20 @@ public class PinganCodeUtil {
     }
 
     private static List<String> searchFileInJarByKeyword(File jarFile, String searchKeyword) throws IOException {
-        ZipInputStream input = null;
+        ZipInputStream jarFileInputStream = null;
         try {
             List<String> result = Lists.newArrayList();
-            input = new ZipInputStream(new FileInputStream(jarFile));
+            jarFileInputStream = new ZipInputStream(new FileInputStream(jarFile));
             ZipEntry entry;
-            while ((entry = input.getNextEntry()) != null) {
+            while ((entry = jarFileInputStream.getNextEntry()) != null) {
                 if (entry.getName().endsWith(".java") && entry.getName().contains(searchKeyword)) {
                     result.add(entry.getName());
                 }
             }
-            IOUtils.closeQuietly(input);
+            IOUtils.closeQuietly(jarFileInputStream);
             return result;
         } finally {
-            IOUtils.closeQuietly(input);
+            IOUtils.closeQuietly(jarFileInputStream);
         }
     }
 
