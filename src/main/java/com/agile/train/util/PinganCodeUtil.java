@@ -19,37 +19,42 @@ public class PinganCodeUtil {
         ZipInputStream jarFileInputStream = null;
         try {
             jarFileInputStream = new ZipInputStream(new FileInputStream(jarFileName));
-            StringBuilder result = readSourceFileInJar(fileName, jarFileInputStream);
+            String result = readSourceFileInJar(fileName, jarFileInputStream);
             jarFileInputStream.closeEntry();
             IOUtils.closeQuietly(jarFileInputStream);
-            return result.toString();
+            return result;
         } finally {
             IOUtils.closeQuietly(jarFileInputStream);
         }
     }
 
-    private static StringBuilder readSourceFileInJar(String fileName, ZipInputStream jarFileInputStream) throws IOException {
-        StringBuilder result = new StringBuilder();
+    private static String readSourceFileInJar(String fileName, ZipInputStream jarFileInputStream) throws IOException {
         ZipEntry entry;
         while ((entry = jarFileInputStream.getNextEntry()) != null) {
-            if (!entry.getName().equals(fileName)) continue;
-
-            BufferedReader sourceCode = new BufferedReader(new InputStreamReader(jarFileInputStream));
-
-            String line;
-            while ((line = sourceCode.readLine()) != null)
-                result.append(line).append("\n");
-
-            break;
+            if (entry.getName().equals(fileName)) {
+                return readSourceCode(jarFileInputStream);
+            }
         }
-        return result;
+        return "";
+    }
+
+    private static String readSourceCode(ZipInputStream jarFileInputStream) throws IOException {
+        StringBuilder result = new StringBuilder();
+        BufferedReader sourceCode = new BufferedReader(new InputStreamReader(jarFileInputStream));
+
+        String line;
+        while ((line = sourceCode.readLine()) != null) {
+            result.append(line).append("\n");
+        }
+
+        return result.toString();
     }
 
     public static List<SourceFile> searchFileInRepositoryByKeyword(String repositoryPath, String searchKeyword) throws IOException {
         File repository = new File(repositoryPath);
         File[] files = repository.listFiles();
 
-        if (files == null || files.length == 0) return Collections.emptyList();
+        if (files.length == 0) return Collections.emptyList();
 
         List<SourceFile> result = Lists.newArrayList();
         for (File file : files) {
@@ -80,7 +85,6 @@ public class PinganCodeUtil {
         }
     }
 
-
     public static String retrieveVersionInJar(File jarFile) throws IOException {
         JarFile jar = null;
         try {
@@ -89,14 +93,14 @@ public class PinganCodeUtil {
 
             String version = "";
             Attributes attributes = manifest.getMainAttributes();
-            if (attributes != null) {
-                for (Object o : attributes.keySet()) {
-                    Attributes.Name key = (Attributes.Name) o;
-                    String keyword = key.toString();
-                    if (keyword.equals("Implementation-Version") || keyword.equals("Bundle-Version")) {
-                        version = (String) attributes.get(key);
-                        break;
-                    }
+            if (attributes == null) return "";
+
+            for (Object attribute : attributes.keySet()) {
+                Attributes.Name key = (Attributes.Name) attribute;
+                String keyword = key.toString();
+                if (keyword.equals("Implementation-Version") || keyword.equals("Bundle-Version")) {
+                    version = (String) attributes.get(key);
+                    break;
                 }
             }
             jar.close();
