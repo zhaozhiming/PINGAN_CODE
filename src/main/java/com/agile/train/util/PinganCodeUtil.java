@@ -1,6 +1,7 @@
 package com.agile.train.util;
 
 import com.agile.train.dto.SourceFile;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
 
@@ -105,7 +106,7 @@ public class PinganCodeUtil {
             }
             jar.close();
 
-            return version;
+            return Strings.isNullOrEmpty(version) ? "1.0" : version;
         } finally {
             if (jar != null) jar.close();
         }
