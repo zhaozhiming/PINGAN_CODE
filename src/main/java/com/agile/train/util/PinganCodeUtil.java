@@ -114,7 +114,7 @@ public class PinganCodeUtil {
         }
     }
 
-    public static String retrieveVersionInJarName(String jarName) {
+    private static String retrieveVersionInJarName(String jarName) {
         String regEx = "(\\d(\\.\\d)+)";
         Pattern pattern = Pattern.compile(regEx);
         Matcher matcher = pattern.matcher(jarName);
@@ -122,4 +122,18 @@ public class PinganCodeUtil {
 
         return matcher.group(1);
     }
+
+    public static List<String> findMethodsBySourceCode(String srcCode) {
+        Pattern p = Pattern
+                .compile("(\\w+\\s+\\w+\\s*\\(((\\s*\\w+\\s*(\\[\\])*\\s*\\s+(\\[\\])*\\s*\\w+\\s*(\\[\\])*,?)+)?\\)\\s*(?=\\{))");
+        Matcher m = p.matcher(srcCode);
+
+        List<String> methods = Lists.newArrayList();
+        while (m.find()) {
+            String methodName = m.group(0).trim();
+            methods.add(methodName);
+        }
+        return methods;
+    }
+
 }

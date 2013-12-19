@@ -37,4 +37,14 @@ public class PinganCodeUtilTest {
         assertThat(result.get(result.size() - 1).getVersion(), is("1.1.1"));
     }
 
+    @Test
+    public void should_test() throws Exception {
+
+        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(
+                "test-repository/cglib-2.2-sources.jar", "net/sf/cglib/beans/BeanCopier.java");
+        List<String> result = PinganCodeUtil.findMethodsBySourceCode(sourceCode);
+        assertThat(result.size(), is(11));
+        assertThat(result.contains("void setSource(Class source)"), is(true));
+    }
+
 }

@@ -19,23 +19,17 @@
 
 <div class="ui divided grid">
     <div class="three wide column">
+        <div class="header">方法列表：</div>
+
         <div class="ui divided selection list">
-            <div class="header">方法列表：</div>
-            <div class="item">
-                <div class="content">
-                    <div class="header">method1</div>
+            <c:forEach items="${methods}" var="method">
+                <div class="item">
+                    <div class="content">
+                        <div class="header">${method}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="item">
-                <div class="content">
-                    <div class="header">method2</div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="content">
-                    <div class="header">method3</div>
-                </div>
-            </div>
+            </c:forEach>
+
         </div>
 
     </div>

@@ -55,7 +55,9 @@ public class MainController {
         log.debug("path:" + path);
         String jarFileName = repositoryName + File.separator + jarName;
         String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(jarFileName, path);
+        List<String> methods = PinganCodeUtil.findMethodsBySourceCode(sourceCode);
         model.put("sourceCode", sourceCode);
+        model.put("methods", methods);
         log.debug("show finish");
         return "show";
     }
