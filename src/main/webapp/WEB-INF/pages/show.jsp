@@ -19,15 +19,11 @@
 
 <div class="ui divided grid">
     <div class="three wide column">
-        <div class="header">方法列表：</div>
 
-        <div class="ui divided selection list">
+        <div class="ui left sidebar vertical menu active">
+            <div class="header item">方法列表：</div>
             <c:forEach items="${methods}" var="method">
-                <div class="item">
-                    <div class="content">
-                        <div class="header">${method}</div>
-                    </div>
-                </div>
+                <a class="item">${method}</a>
             </c:forEach>
         </div>
     </div>
@@ -38,8 +34,6 @@
         </pre>
     </div>
 </div>
-
-
 
 </body>
 </html>

@@ -3,7 +3,7 @@
 
 <%@ page contentType="text/html; charset=UTF-8" %>
 <head>
-    <title>PINGAN CODE</title>
+    <title>PingAn Code</title>
     <link type="text/css" rel="stylesheet" href="<c:url value='/resources/css/semantic.min.css'/>">
 
     <script type="text/javascript" src="<c:url value='/resources/js/jquery-2.0.3.min.js'/>"></script>
@@ -20,7 +20,7 @@
         <a class="launch item" href="<c:url value='/'/>"><i class="icon list layout"></i> 首页</a>
 
         <div class="title item">
-            <b>PINGAN CODE</b>
+            <b>PingAn Code</b>
         </div>
     </div>
 </div>
@@ -30,12 +30,6 @@
         <i class="red awesome home icon"></i> <b>主页</b>
     </a>
 
-    <div>
-        <a class="item" href="#">
-            <i class="green cloud upload icon"></i>
-            <b>上传</b>
-        </a>
-    </div>
     <div>
         <a class="item" href="<c:url value='/'/>">
             <i class="blue search icon"></i>
