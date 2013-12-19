@@ -29,9 +29,7 @@
                     </div>
                 </div>
             </c:forEach>
-
         </div>
-
     </div>
 
     <div class="thirteen wide column">
