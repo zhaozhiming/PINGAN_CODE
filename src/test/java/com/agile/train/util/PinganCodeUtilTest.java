@@ -3,7 +3,6 @@ package com.agile.train.util;
 import com.agile.train.dto.SourceFile;
 import org.junit.Test;
 
-import java.io.File;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -25,6 +24,7 @@ public class PinganCodeUtilTest {
         List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "BeanCopier");
         assertThat(result.size(), is(1));
         assertThat(result.get(0).getPath(), is("net/sf/cglib/beans/BeanCopier.java"));
+        assertThat(result.get(0).getVersion(), is("2.2"));
     }
 
     @Test
@@ -33,12 +33,8 @@ public class PinganCodeUtilTest {
         assertThat(result.size(), is(16));
         assertThat(result.get(0).getPath(), is("org/slf4j/impl/Log4jLoggerAdapter.java"));
         assertThat(result.get(result.size() - 1).getPath(), is("org/apache/commons/logging/LogSource.java"));
-    }
-
-    @Test
-    public void should_retrieve_version_when_search_jar_file() throws Exception {
-        assertThat(PinganCodeUtil.retrieveVersionInJar(new File("test-repository/cglib-2.2-sources.jar")), is(""));
-        assertThat(PinganCodeUtil.retrieveVersionInJar(new File("test-repository/commons-logging-1.1.1-sources.jar")), is(""));
+        assertThat(result.get(1).getVersion(), is("1.7.5"));
+        assertThat(result.get(result.size() - 1).getVersion(), is("1.1.1"));
     }
 
 }

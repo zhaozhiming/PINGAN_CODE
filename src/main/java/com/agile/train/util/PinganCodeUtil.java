@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -106,9 +108,18 @@ public class PinganCodeUtil {
             }
             jar.close();
 
-            return Strings.isNullOrEmpty(version) ? "1.0" : version;
+            return Strings.isNullOrEmpty(version) ? retrieveVersionInJarName(jarFile.getName()) : version;
         } finally {
             if (jar != null) jar.close();
         }
+    }
+
+    public static String retrieveVersionInJarName(String jarName) {
+        String regEx = "(\\d(\\.\\d)+)";
+        Pattern pattern = Pattern.compile(regEx);
+        Matcher matcher = pattern.matcher(jarName);
+        matcher.find();
+
+        return matcher.group(1);
     }
 }
