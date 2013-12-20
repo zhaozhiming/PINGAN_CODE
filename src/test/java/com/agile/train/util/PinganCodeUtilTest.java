@@ -32,16 +32,16 @@ public class PinganCodeUtilTest {
     public void should_search_file_in_repository_by_keyword_return_more_files_when_when_have_many_jars() throws Exception {
         List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "Log");
         assertThat(result.size(), is(16));
+        int assertCount = 0;
         for (SourceFile sourceFile : result) {
-            assertSourceFileWhenExist(sourceFile, "org/slf4j/impl/Log4jLoggerAdapter.java",
+            assertCount += assertSourceFileWhenExist(sourceFile, "org/slf4j/impl/Log4jLoggerAdapter.java",
                     "slf4j-log4j12-1.7.5-sources.jar", "1.7.5");
 
-            assertSourceFileWhenExist(sourceFile, "org/slf4j/impl/Log4jLoggerAdapter.java",
-                    "slf4j-log4j12-1.7.5-sources.jar", "1.7.5");
-
-            assertSourceFileWhenExist(sourceFile, "org/apache/commons/logging/LogSource.java",
+            assertCount += assertSourceFileWhenExist(sourceFile, "org/apache/commons/logging/LogSource.java",
                     "commons-logging-1.1.1-sources.jar", "1.1.1");
         }
+
+        assertThat(assertCount, is(2));
     }
 
     @Test
@@ -54,12 +54,14 @@ public class PinganCodeUtilTest {
         assertThat(result.contains("void setSource(Class source)"), is(true));
     }
 
-    private void assertSourceFileWhenExist(SourceFile sourceFile, String exceptPath,
-                                           String exceptJarName, String exceptVersion) {
+    private int assertSourceFileWhenExist(SourceFile sourceFile, String exceptPath,
+                                          String exceptJarName, String exceptVersion) {
         if (sourceFile.getPath().equals(exceptPath)) {
             assertThat(sourceFile.getJarName(), is(exceptJarName));
             assertThat(sourceFile.getVersion(), is(exceptVersion));
+            return 1;
         }
+        return 0;
     }
 
 }
