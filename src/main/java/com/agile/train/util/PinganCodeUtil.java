@@ -7,8 +7,10 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.Attributes;
+import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.regex.Matcher;
@@ -37,29 +39,6 @@ public class PinganCodeUtil {
         } finally {
             IOUtils.closeQuietly(jarFileInputStream);
         }
-    }
-
-    private static String readSourceFileInJar(String fileName,
-                                              ZipInputStream jarFileInputStream) throws IOException {
-        ZipEntry entry;
-        while ((entry = jarFileInputStream.getNextEntry()) != null) {
-            if (entry.getName().equals(fileName)) {
-                return readSourceCode(jarFileInputStream);
-            }
-        }
-        return "";
-    }
-
-    private static String readSourceCode(ZipInputStream jarFileInputStream) throws IOException {
-        StringBuilder result = new StringBuilder();
-        BufferedReader sourceCode = new BufferedReader(new InputStreamReader(jarFileInputStream));
-
-        String line;
-        while ((line = sourceCode.readLine()) != null) {
-            result.append(line).append("\n");
-        }
-
-        return result.toString();
     }
 
     public static List<SourceFile> searchFileInRepositoryByKeyword(String repositoryPath,
@@ -91,50 +70,81 @@ public class PinganCodeUtil {
         return methods;
     }
 
+    private static String readSourceFileInJar(String fileName,
+                                              ZipInputStream jarFileInputStream) throws IOException {
+        ZipEntry entry;
+        while ((entry = jarFileInputStream.getNextEntry()) != null) {
+            if (entry.getName().equals(fileName)) {
+                return readSourceCode(jarFileInputStream);
+            }
+        }
+        return "";
+    }
+
+    private static String readSourceCode(ZipInputStream jarFileInputStream) throws IOException {
+        StringBuilder result = new StringBuilder();
+        BufferedReader sourceCode = new BufferedReader(new InputStreamReader(jarFileInputStream));
+
+        String line;
+        while ((line = sourceCode.readLine()) != null) {
+            result.append(line).append("\n");
+        }
+
+        return result.toString();
+    }
+
     private static List<SourceFile> searchFileInJarByKeyword(File jarFile, String searchKeyword) throws IOException {
-        ZipInputStream jarFileInputStream = null;
+        JarFile jar = new JarFile(jarFile);
+
         try {
-            jarFileInputStream = new ZipInputStream(new FileInputStream(jarFile));
+            Enumeration<JarEntry> entries = jar.entries();
+
             List<SourceFile> result = Lists.newArrayList();
-            ZipEntry entry;
-            while ((entry = jarFileInputStream.getNextEntry()) != null) {
-                String path = entry.getName();
+            while (entries.hasMoreElements()) {
+                JarEntry jarEntry = entries.nextElement();
+                String path = jarEntry.getName();
+
                 if (path.endsWith(SUFFIX_JAVA) && path.contains(searchKeyword)) {
                     result.add(new SourceFile(jarFile.getName(), retrieveVersionInJar(jarFile), path));
                 }
             }
-            IOUtils.closeQuietly(jarFileInputStream);
+
+            jar.close();
             return result;
         } finally {
-            IOUtils.closeQuietly(jarFileInputStream);
+            jar.close();
         }
     }
 
     private static String retrieveVersionInJar(File jarFile) throws IOException {
-        JarFile jar = null;
+        JarFile jar = new JarFile(jarFile);
         try {
-            jar = new JarFile(jarFile);
             Manifest manifest = jar.getManifest();
 
             String version = UNKNOWN_VERSION;
             Attributes attributes = manifest.getMainAttributes();
             if (attributes == null) return UNKNOWN_VERSION;
 
-            for (Object attribute : attributes.keySet()) {
-                Attributes.Name key = (Attributes.Name) attribute;
-                String keyword = key.toString();
-                if (keyword.equals(IMPLEMENTATION_VERSION) || keyword.equals(BUNDLE_VERSION)) {
-                    version = (String) attributes.get(key);
-                    break;
-                }
-            }
+            version = retrieveVersionInManifest(version, attributes);
             jar.close();
 
             version = Strings.isNullOrEmpty(version) ? retrieveVersionInJarName(jarFile.getName()) : version;
             return Strings.isNullOrEmpty(version) ? UNKNOWN_VERSION : version;
         } finally {
-            if (jar != null) jar.close();
+            jar.close();
         }
+    }
+
+    private static String retrieveVersionInManifest(String version, Attributes attributes) {
+        for (Object attribute : attributes.keySet()) {
+            Attributes.Name key = (Attributes.Name) attribute;
+            String keyword = key.toString();
+            if (keyword.equals(IMPLEMENTATION_VERSION) || keyword.equals(BUNDLE_VERSION)) {
+                version = (String) attributes.get(key);
+                break;
+            }
+        }
+        return version;
     }
 
     private static String retrieveVersionInJarName(String jarName) {
