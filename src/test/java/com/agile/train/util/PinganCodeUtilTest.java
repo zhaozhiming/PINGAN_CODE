@@ -1,6 +1,6 @@
 package com.agile.train.util;
 
-import com.agile.train.dto.SourceFile;
+import com.agile.train.model.SourceFile;
 import org.junit.Test;
 
 import java.util.List;

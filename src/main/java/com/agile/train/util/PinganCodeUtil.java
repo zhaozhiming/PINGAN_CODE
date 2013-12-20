@@ -1,6 +1,6 @@
 package com.agile.train.util;
 
-import com.agile.train.dto.SourceFile;
+import com.agile.train.model.SourceFile;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;

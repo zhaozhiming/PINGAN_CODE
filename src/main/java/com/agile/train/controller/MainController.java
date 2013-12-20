@@ -1,6 +1,6 @@
 package com.agile.train.controller;
 
-import com.agile.train.dto.SourceFile;
+import com.agile.train.model.SourceFile;
 import com.agile.train.util.PinganCodeUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

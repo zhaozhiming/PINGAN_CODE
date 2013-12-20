@@ -1,4 +1,4 @@
-package com.agile.train.dto;
+package com.agile.train.model;
 
 public class SourceFile {
     private String jarName;
