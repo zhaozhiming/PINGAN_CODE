@@ -26,11 +26,13 @@ public class PinganCodeUtil {
     private static final String SUFFIX_JAVA = ".java";
     private static final String UNKNOWN_VERSION = "";
     private static final int VERSION_INDEX = 1;
+    private static final String PREFIX_JAR_FILE = "jar:file:";
+    private static final String PREFIX_FILE_IN_JAR = "!/";
 
     public static String readSourceCodeByFileNameInJar(String jarFileName, String fileName) throws IOException {
         InputStream inputStream = null;
         try {
-            URL url = new URL("jar:file:" + jarFileName + "!/" + fileName);
+            URL url = new URL(PREFIX_JAR_FILE + jarFileName + PREFIX_FILE_IN_JAR + fileName);
             inputStream = url.openStream();
             return readSourceCode(inputStream);
         } finally {
@@ -108,11 +110,10 @@ public class PinganCodeUtil {
         try {
             Manifest manifest = jar.getManifest();
 
-            String version = UNKNOWN_VERSION;
             Attributes attributes = manifest.getMainAttributes();
             if (attributes == null) return UNKNOWN_VERSION;
 
-            version = retrieveVersionInManifest(version, attributes);
+            String version = retrieveVersionInManifest(attributes);
             jar.close();
 
             version = Strings.isNullOrEmpty(version) ? retrieveVersionInJarName(jarFile.getName()) : version;
@@ -122,16 +123,15 @@ public class PinganCodeUtil {
         }
     }
 
-    private static String retrieveVersionInManifest(String version, Attributes attributes) {
+    private static String retrieveVersionInManifest(Attributes attributes) {
         for (Object attribute : attributes.keySet()) {
             Attributes.Name key = (Attributes.Name) attribute;
             String keyword = key.toString();
             if (keyword.equals(IMPLEMENTATION_VERSION) || keyword.equals(BUNDLE_VERSION)) {
-                version = (String) attributes.get(key);
-                break;
+                return (String) attributes.get(key);
             }
         }
-        return version;
+        return UNKNOWN_VERSION;
     }
 
     private static String retrieveVersionInJarName(String jarName) {
