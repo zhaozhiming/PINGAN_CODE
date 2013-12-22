@@ -46,12 +46,30 @@ public class PinganCodeUtilTest {
 
     @Test
     public void should_return_method_list_when_given_source_code() throws Exception {
-
         String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(
                 "test-repository/cglib-2.2-sources.jar", "net/sf/cglib/beans/BeanCopier.java");
         List<String> result = PinganCodeUtil.findMethodsBySourceCode(sourceCode);
         assertThat(result.size(), is(11));
         assertThat(result.contains("void setSource(Class source)"), is(true));
+    }
+
+    @Test
+    public void should_return_method_when_given_source_code_file() throws Exception {
+        List<String> methods = PinganCodeUtil.retrieveMethodInSourceCode("public void method1(String s1)");
+        assertThat(methods.size(), is(1));
+        assertThat(methods.get(0), is("method1"));
+        methods = PinganCodeUtil.retrieveMethodInSourceCode("private void method1(String s1)");
+        assertThat(methods.size(), is(1));
+        assertThat(methods.get(0), is("method1"));
+        methods = PinganCodeUtil.retrieveMethodInSourceCode("private String method1(String s1)");
+        assertThat(methods.size(), is(1));
+        assertThat(methods.get(0), is("method1"));
+        methods = PinganCodeUtil.retrieveMethodInSourceCode("private String method1(String s1, String s2)");
+        assertThat(methods.size(), is(1));
+        assertThat(methods.get(0), is("method1"));
+//        methods = PinganCodeUtil.retrieveMethodInSourceCode(" String method1(String s1, String s2)");
+//        assertThat(methods.size(), is(1));
+//        assertThat(methods.get(0), is("method1"));
     }
 
     private int assertSourceFileWhenExist(SourceFile sourceFile, String exceptPath,

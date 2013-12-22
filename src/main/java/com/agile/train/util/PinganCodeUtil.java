@@ -143,4 +143,17 @@ public class PinganCodeUtil {
         return matcher.group(VERSION_INDEX);
     }
 
+    public static List<String> retrieveMethodInSourceCode(String sourceCode) {
+        String regEx = "[public|private|protected](\\s)+(\\w)+(\\s)+((\\w)+)\\(((\\w)+(\\s)+(\\w)+(,\\s)?)*\\)";
+        Pattern pattern = Pattern.compile(regEx);
+        Matcher matcher = pattern.matcher(sourceCode);
+
+        List<String> methods = Lists.newArrayList();
+        while (matcher.find()) {
+            String methodName = matcher.group(4).trim();
+            methods.add(methodName);
+        }
+
+        return methods;
+    }
 }
