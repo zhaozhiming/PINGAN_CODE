@@ -144,13 +144,13 @@ public class PinganCodeUtil {
     }
 
     public static List<String> retrieveMethodInSourceCode(String sourceCode) {
-        String regEx = "[public|private|protected](\\s)+(\\w)+(\\s)+((\\w)+)\\(((\\w)+(\\s)+(\\w)+(,\\s)?)*\\)";
+        String regEx = "([public|private|protected](\\s))?+(\\w)+(\\s)+((\\w)+)\\(((\\w)+(\\s)+(\\w)+(,\\s)?)*\\)";
         Pattern pattern = Pattern.compile(regEx);
         Matcher matcher = pattern.matcher(sourceCode);
 
         List<String> methods = Lists.newArrayList();
         while (matcher.find()) {
-            String methodName = matcher.group(4).trim();
+            String methodName = matcher.group(5).trim();
             methods.add(methodName);
         }
 

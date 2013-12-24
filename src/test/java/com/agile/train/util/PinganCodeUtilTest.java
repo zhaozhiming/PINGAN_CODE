@@ -67,9 +67,9 @@ public class PinganCodeUtilTest {
         methods = PinganCodeUtil.retrieveMethodInSourceCode("private String method1(String s1, String s2)");
         assertThat(methods.size(), is(1));
         assertThat(methods.get(0), is("method1"));
-//        methods = PinganCodeUtil.retrieveMethodInSourceCode(" String method1(String s1, String s2)");
-//        assertThat(methods.size(), is(1));
-//        assertThat(methods.get(0), is("method1"));
+        methods = PinganCodeUtil.retrieveMethodInSourceCode("String method1(String s1, String s2)");
+        assertThat(methods.size(), is(1));
+        assertThat(methods.get(0), is("method1"));
     }
 
     private int assertSourceFileWhenExist(SourceFile sourceFile, String exceptPath,
