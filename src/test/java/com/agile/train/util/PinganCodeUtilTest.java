@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static com.agile.train.util.PinganCodeUtil.retrieveMethodInSourceCode;
 import static junit.framework.TestCase.assertNotNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -55,21 +56,16 @@ public class PinganCodeUtilTest {
 
     @Test
     public void should_return_method_when_given_source_code_file() throws Exception {
-        List<String> methods = PinganCodeUtil.retrieveMethodInSourceCode("public void method1(String s1)");
-        assertThat(methods.size(), is(1));
-        assertThat(methods.get(0), is("method1"));
-        methods = PinganCodeUtil.retrieveMethodInSourceCode("private void method1(String s1)");
-        assertThat(methods.size(), is(1));
-        assertThat(methods.get(0), is("method1"));
-        methods = PinganCodeUtil.retrieveMethodInSourceCode("private String method1(String s1)");
-        assertThat(methods.size(), is(1));
-        assertThat(methods.get(0), is("method1"));
-        methods = PinganCodeUtil.retrieveMethodInSourceCode("private String method1(String s1, String s2)");
-        assertThat(methods.size(), is(1));
-        assertThat(methods.get(0), is("method1"));
-        methods = PinganCodeUtil.retrieveMethodInSourceCode("String method1(String s1, String s2)");
-        assertThat(methods.size(), is(1));
-        assertThat(methods.get(0), is("method1"));
+        assertThat(retrieveMethodInSourceCode("public void method1(String s1)").get(0), is("method1"));
+        assertThat(retrieveMethodInSourceCode("protected void method1(String s1)").get(0), is("method1"));
+        assertThat(retrieveMethodInSourceCode("private void method1(String s1)").get(0), is("method1"));
+        assertThat(retrieveMethodInSourceCode("private String method1(String s1)").get(0), is("method1"));
+        assertThat(retrieveMethodInSourceCode("private String method1(String s1, String s2)").get(0), is("method1"));
+        assertThat(retrieveMethodInSourceCode("String method1(String s1, String s2)").get(0), is("method1"));
+        assertThat(retrieveMethodInSourceCode("String method1(String[] s1)").get(0), is("method1"));
+        assertThat(retrieveMethodInSourceCode("String method1(String[] s1, String[] s2)").get(0), is("method1"));
+        assertThat(retrieveMethodInSourceCode("String method1(List<String> s1)").get(0), is("method1"));
+        assertThat(retrieveMethodInSourceCode("String method1(List<String> s1, Map<String, String> s2)").get(0), is("method1"));
     }
 
     private int assertSourceFileWhenExist(SourceFile sourceFile, String exceptPath,
