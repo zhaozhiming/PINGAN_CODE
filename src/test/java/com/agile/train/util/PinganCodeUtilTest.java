@@ -66,6 +66,13 @@ public class PinganCodeUtilTest {
         assertThat(retrieveMethodInSourceCode("String method1(String[] s1, String[] s2)").get(0), is("method1"));
         assertThat(retrieveMethodInSourceCode("String method1(List<String> s1)").get(0), is("method1"));
         assertThat(retrieveMethodInSourceCode("String method1(List<String> s1, Map<String, String> s2)").get(0), is("method1"));
+        assertThat(retrieveMethodInSourceCode("private static String method1(List<String> s1, Map<String, String> s2)").get(0), is("method1"));
+        assertThat(retrieveMethodInSourceCode("Object convert(Object, Class, Object)").get(0), is("convert"));
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void should_throw_exception_when_given_source_code_with_new() {
+        assertThat(retrieveMethodInSourceCode("private new method1(String s1)").get(0), is("method1"));
     }
 
     private int assertSourceFileWhenExist(SourceFile sourceFile, String exceptPath,
