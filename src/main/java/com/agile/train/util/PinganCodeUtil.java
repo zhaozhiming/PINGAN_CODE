@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 public class PinganCodeUtil {
 
     private static final String REGEX_FIND_VERSION = "(\\d(\\.\\d)+)";
-    private static final String REGEX_FIND_METHODS = "(\\w+\\s+(\\w+)\\s*\\(((\\s*\\w+\\s*(\\[\\])*\\s*\\s+(\\[\\])*\\s*\\w+\\s*(\\[\\])*,?)+)?\\)\\s*(?=\\{))";
     private static final String IMPLEMENTATION_VERSION = "Implementation-Version";
     private static final String BUNDLE_VERSION = "Bundle-Version";
     private static final String SUFFIX_JAVA = ".java";
@@ -50,18 +49,6 @@ public class PinganCodeUtil {
         }
 
         return result;
-    }
-
-    public static List<String> findMethodsBySourceCode(String srcCode) {
-        Pattern pattern = Pattern.compile(REGEX_FIND_METHODS);
-        Matcher matcher = pattern.matcher(srcCode);
-
-        List<String> methods = Lists.newArrayList();
-        while (matcher.find()) {
-            String methodName = matcher.group(0).trim();
-            methods.add(methodName);
-        }
-        return methods;
     }
 
     public static String readSourceCodeByFileNameInJar(String jarFileName, String fileName) throws Exception {

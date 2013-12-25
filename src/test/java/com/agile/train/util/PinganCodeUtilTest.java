@@ -37,15 +37,6 @@ public class PinganCodeUtilTest {
     }
 
     @Test
-    public void should_return_method_list_when_given_source_code() throws Exception {
-        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(
-                "test-repository/cglib-2.2-sources.jar", "net/sf/cglib/beans/BeanCopier.java");
-        List<String> result = PinganCodeUtil.findMethodsBySourceCode(sourceCode);
-        assertThat(result.size(), is(11));
-        assertThat(result.contains("void setSource(Class source)"), is(true));
-    }
-
-    @Test
     public void should_read_source_code_by_file_name_in_jar_correct() throws Exception {
         String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(
                 "test-repository/cglib-2.2-sources.jar", "net/sf/cglib/beans/BeanCopier.java");
@@ -68,7 +59,7 @@ public class PinganCodeUtilTest {
     }
 
     private int assertMethod(MethodDeclaration method, String exceptName,
-                                          String exceptModifiers, String exceptType) {
+                             String exceptModifiers, String exceptType) {
         if (method.getName().equals(exceptName)) {
             assertThat(Modifier.toString(method.getModifiers()), is(exceptModifiers));
             assertThat(method.getType().toString(), is(exceptType));
@@ -76,6 +67,7 @@ public class PinganCodeUtilTest {
         }
         return 0;
     }
+
     private int assertSourceFileWhenExist(SourceFile sourceFile, String exceptPath,
                                           String exceptJarName, String exceptVersion) {
         if (sourceFile.getPath().equals(exceptPath)) {
