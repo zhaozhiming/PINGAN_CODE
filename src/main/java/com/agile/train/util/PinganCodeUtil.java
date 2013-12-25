@@ -3,6 +3,10 @@ package com.agile.train.util;
 import com.agile.train.model.SourceFile;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import japa.parser.JavaParser;
+import japa.parser.ast.CompilationUnit;
+import japa.parser.ast.body.MethodDeclaration;
+import japa.parser.ast.visitor.VoidVisitorAdapter;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
@@ -20,7 +24,7 @@ import java.util.regex.Pattern;
 public class PinganCodeUtil {
 
     private static final String REGEX_FIND_VERSION = "(\\d(\\.\\d)+)";
-    private static final String REGEX_FIND_METHODS = "(\\w+\\s+\\w+\\s*\\(((\\s*\\w+\\s*(\\[\\])*\\s*\\s+(\\[\\])*\\s*\\w+\\s*(\\[\\])*,?)+)?\\)\\s*(?=\\{))";
+    private static final String REGEX_FIND_METHODS = "(\\w+\\s+(\\w+)\\s*\\(((\\s*\\w+\\s*(\\[\\])*\\s*\\s+(\\[\\])*\\s*\\w+\\s*(\\[\\])*,?)+)?\\)\\s*(?=\\{))";
     private static final String IMPLEMENTATION_VERSION = "Implementation-Version";
     private static final String BUNDLE_VERSION = "Bundle-Version";
     private static final String SUFFIX_JAVA = ".java";
@@ -28,17 +32,6 @@ public class PinganCodeUtil {
     private static final int VERSION_INDEX = 1;
     private static final String PREFIX_JAR_FILE = "jar:file:";
     private static final String PREFIX_FILE_IN_JAR = "!/";
-
-    public static String readSourceCodeByFileNameInJar(String jarFileName, String fileName) throws IOException {
-        InputStream inputStream = null;
-        try {
-            URL url = new URL(PREFIX_JAR_FILE + jarFileName + PREFIX_FILE_IN_JAR + fileName);
-            inputStream = url.openStream();
-            return readSourceCode(inputStream);
-        } finally {
-            IOUtils.closeQuietly(inputStream);
-        }
-    }
 
     public static List<SourceFile> searchFileInRepositoryByKeyword(String repositoryPath,
                                                                    String searchKeyword) throws IOException {
@@ -143,17 +136,45 @@ public class PinganCodeUtil {
         return matcher.group(VERSION_INDEX);
     }
 
-    public static List<String> retrieveMethodInSourceCode(String sourceCode) {
-        String regEx = "((public|private|protected)\\s+)?(static\\s+)?([^new]+)\\s+(\\w+)\\((([a-zA-Z0-9|<|>|\\[|\\]|,]+)\\s+(\\w+)(,\\s)?)*\\)";
-        Pattern pattern = Pattern.compile(regEx);
-        Matcher matcher = pattern.matcher(sourceCode);
+    public static List<MethodDeclaration> retrieveMethodInSourceCode(String jarFileName, String fileName) throws Exception {
+        CompilationUnit compilationUnit = retrieveCompilationUnitInFromJavaFile(jarFileName, fileName);
 
-        List<String> methods = Lists.newArrayList();
-        while (matcher.find()) {
-            String methodName = matcher.group(5).trim();
-            methods.add(methodName);
+        MethodVisitor methodVisitor = new MethodVisitor();
+        methodVisitor.visit(compilationUnit, null);
+
+        return methodVisitor.getMethods();
+    }
+
+    public static String readSourceCodeByFileNameInJar(String jarFileName, String fileName) throws Exception {
+        return retrieveCompilationUnitInFromJavaFile(jarFileName, fileName).toString();
+    }
+
+    private static CompilationUnit retrieveCompilationUnitInFromJavaFile(
+            String jarFileName, String fileName) throws Exception {
+        InputStream inputStream = null;
+
+        try {
+            URL url = new URL(PREFIX_JAR_FILE + jarFileName + PREFIX_FILE_IN_JAR + fileName);
+            inputStream = url.openStream();
+            // parse the file
+            return JavaParser.parse(inputStream);
+        } finally {
+            IOUtils.closeQuietly(inputStream);
+        }
+    }
+
+    private static class MethodVisitor extends VoidVisitorAdapter {
+
+        private List<MethodDeclaration> methods = Lists.newArrayList();
+
+        @Override
+        public void visit(MethodDeclaration method, Object arg) {
+            methods.add(method);
         }
 
-        return methods;
+        public List<MethodDeclaration> getMethods() {
+            return methods;
+        }
     }
+
 }

@@ -1,11 +1,12 @@
 package com.agile.train.util;
 
 import com.agile.train.model.SourceFile;
+import japa.parser.ast.body.MethodDeclaration;
 import org.junit.Test;
 
+import java.lang.reflect.Modifier;
 import java.util.List;
 
-import static com.agile.train.util.PinganCodeUtil.retrieveMethodInSourceCode;
 import static junit.framework.TestCase.assertNotNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -17,7 +18,7 @@ public class PinganCodeUtilTest {
         String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(
                 "test-repository/cglib-2.2-sources.jar", "net/sf/cglib/beans/BeanCopier.java");
         assertNotNull(sourceCode);
-        assertThat(sourceCode.contains("public class BeanCopier"), is(true));
+        assertThat(sourceCode.contains("class BeanCopier"), is(true));
     }
 
     @Test
@@ -37,11 +38,9 @@ public class PinganCodeUtilTest {
         for (SourceFile sourceFile : result) {
             assertCount += assertSourceFileWhenExist(sourceFile, "org/slf4j/impl/Log4jLoggerAdapter.java",
                     "slf4j-log4j12-1.7.5-sources.jar", "1.7.5");
-
             assertCount += assertSourceFileWhenExist(sourceFile, "org/apache/commons/logging/LogSource.java",
                     "commons-logging-1.1.1-sources.jar", "1.1.1");
         }
-
         assertThat(assertCount, is(2));
     }
 
@@ -56,25 +55,27 @@ public class PinganCodeUtilTest {
 
     @Test
     public void should_return_method_when_given_source_code_file() throws Exception {
-        assertThat(retrieveMethodInSourceCode("public void method1(String s1)").get(0), is("method1"));
-        assertThat(retrieveMethodInSourceCode("protected void method1(String s1)").get(0), is("method1"));
-        assertThat(retrieveMethodInSourceCode("private void method1(String s1)").get(0), is("method1"));
-        assertThat(retrieveMethodInSourceCode("private String method1(String s1)").get(0), is("method1"));
-        assertThat(retrieveMethodInSourceCode("private String method1(String s1, String s2)").get(0), is("method1"));
-        assertThat(retrieveMethodInSourceCode("String method1(String s1, String s2)").get(0), is("method1"));
-        assertThat(retrieveMethodInSourceCode("String method1(String[] s1)").get(0), is("method1"));
-        assertThat(retrieveMethodInSourceCode("String method1(String[] s1, String[] s2)").get(0), is("method1"));
-        assertThat(retrieveMethodInSourceCode("String method1(List<String> s1)").get(0), is("method1"));
-        assertThat(retrieveMethodInSourceCode("String method1(List<String> s1, Map<String, String> s2)").get(0), is("method1"));
-        assertThat(retrieveMethodInSourceCode("private static String method1(List<String> s1, Map<String, String> s2)").get(0), is("method1"));
-        assertThat(retrieveMethodInSourceCode("Object convert(Object, Class, Object)").get(0), is("convert"));
+        List<MethodDeclaration> methods = PinganCodeUtil.retrieveMethodInSourceCode(
+                "test-repository/cglib-2.2-sources.jar", "net/sf/cglib/beans/BeanCopier.java");
+        assertThat(methods.size(), is(12));
+
+        int assertCount = 0;
+        for (MethodDeclaration method : methods) {
+            assertCount += assertMethod(method, "copy", "public abstract", "void");
+            assertCount += assertMethod(method, "compatible", "private static", "boolean");
+        }
+        assertThat(assertCount, is(2));
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void should_throw_exception_when_given_source_code_with_new() {
-        assertThat(retrieveMethodInSourceCode("private new method1(String s1)").get(0), is("method1"));
+    private int assertMethod(MethodDeclaration method, String exceptName,
+                                          String exceptModifiers, String exceptType) {
+        if (method.getName().equals(exceptName)) {
+            assertThat(Modifier.toString(method.getModifiers()), is(exceptModifiers));
+            assertThat(method.getType().toString(), is(exceptType));
+            return 1;
+        }
+        return 0;
     }
-
     private int assertSourceFileWhenExist(SourceFile sourceFile, String exceptPath,
                                           String exceptJarName, String exceptVersion) {
         if (sourceFile.getPath().equals(exceptPath)) {
