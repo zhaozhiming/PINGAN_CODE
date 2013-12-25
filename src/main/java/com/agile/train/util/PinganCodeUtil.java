@@ -9,7 +9,9 @@ import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.visitor.VoidVisitorAdapter;
 import org.apache.commons.io.IOUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -62,15 +64,17 @@ public class PinganCodeUtil {
         return methods;
     }
 
-    private static String readSourceCode(InputStream inputStream) throws IOException {
-        StringBuilder result = new StringBuilder();
-        BufferedReader sourceCode = new BufferedReader(new InputStreamReader(inputStream));
+    public static String readSourceCodeByFileNameInJar(String jarFileName, String fileName) throws Exception {
+        return retrieveCompilationUnitInFromJavaFile(jarFileName, fileName).toString();
+    }
 
-        String line;
-        while ((line = sourceCode.readLine()) != null) {
-            result.append(line).append("\n");
-        }
-        return result.toString();
+    public static List<MethodDeclaration> retrieveMethodsByFileNameInJar(String jarFileName, String fileName) throws Exception {
+        CompilationUnit compilationUnit = retrieveCompilationUnitInFromJavaFile(jarFileName, fileName);
+
+        MethodVisitor methodVisitor = new MethodVisitor();
+        methodVisitor.visit(compilationUnit, null);
+
+        return methodVisitor.getMethods();
     }
 
     private static List<SourceFile> searchFileInJarByKeyword(File jarFile, String searchKeyword) throws IOException {
@@ -134,19 +138,6 @@ public class PinganCodeUtil {
         matcher.find();
 
         return matcher.group(VERSION_INDEX);
-    }
-
-    public static List<MethodDeclaration> retrieveMethodInSourceCode(String jarFileName, String fileName) throws Exception {
-        CompilationUnit compilationUnit = retrieveCompilationUnitInFromJavaFile(jarFileName, fileName);
-
-        MethodVisitor methodVisitor = new MethodVisitor();
-        methodVisitor.visit(compilationUnit, null);
-
-        return methodVisitor.getMethods();
-    }
-
-    public static String readSourceCodeByFileNameInJar(String jarFileName, String fileName) throws Exception {
-        return retrieveCompilationUnitInFromJavaFile(jarFileName, fileName).toString();
     }
 
     private static CompilationUnit retrieveCompilationUnitInFromJavaFile(

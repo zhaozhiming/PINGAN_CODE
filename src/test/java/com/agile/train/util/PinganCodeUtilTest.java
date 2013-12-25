@@ -14,14 +14,6 @@ import static org.hamcrest.core.Is.is;
 public class PinganCodeUtilTest {
 
     @Test
-    public void should_read_source_code_by_file_name_in_jar_correct() throws Exception {
-        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(
-                "test-repository/cglib-2.2-sources.jar", "net/sf/cglib/beans/BeanCopier.java");
-        assertNotNull(sourceCode);
-        assertThat(sourceCode.contains("class BeanCopier"), is(true));
-    }
-
-    @Test
     public void should_search_file_in_repository_by_keyword_return_1_file_when_when_have_1_jar() throws Exception {
         List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "BeanCopier");
         assertThat(result.size(), is(1));
@@ -54,8 +46,16 @@ public class PinganCodeUtilTest {
     }
 
     @Test
+    public void should_read_source_code_by_file_name_in_jar_correct() throws Exception {
+        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(
+                "test-repository/cglib-2.2-sources.jar", "net/sf/cglib/beans/BeanCopier.java");
+        assertNotNull(sourceCode);
+        assertThat(sourceCode.contains("class BeanCopier"), is(true));
+    }
+
+    @Test
     public void should_return_method_when_given_source_code_file() throws Exception {
-        List<MethodDeclaration> methods = PinganCodeUtil.retrieveMethodInSourceCode(
+        List<MethodDeclaration> methods = PinganCodeUtil.retrieveMethodsByFileNameInJar(
                 "test-repository/cglib-2.2-sources.jar", "net/sf/cglib/beans/BeanCopier.java");
         assertThat(methods.size(), is(12));
 
