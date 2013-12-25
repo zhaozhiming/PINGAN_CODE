@@ -2,6 +2,7 @@ package com.agile.train.controller;
 
 import com.agile.train.model.SourceFile;
 import com.agile.train.util.PinganCodeUtil;
+import japa.parser.ast.body.MethodDeclaration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -55,7 +56,7 @@ public class MainController {
         log.debug("path:" + path);
         String jarFileName = repositoryName + File.separator + jarName;
         String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(jarFileName, path);
-        List<String> methods = PinganCodeUtil.findMethodsBySourceCode(sourceCode);
+        List<MethodDeclaration> methods = PinganCodeUtil.retrieveMethodsByFileNameInJar(jarFileName, path);
         model.put("sourceCode", sourceCode);
         model.put("methods", methods);
         log.debug("show finish");
