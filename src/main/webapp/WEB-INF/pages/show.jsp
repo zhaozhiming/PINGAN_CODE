@@ -23,7 +23,7 @@
         <div class="ui left sidebar vertical menu active">
             <div class="header item">方法列表：</div>
             <c:forEach items="${methods}" var="method">
-                <a class="item">${method.name}</a>
+                <a class="item" data-findtext="${method.findText}">${method.showText}</a>
             </c:forEach>
         </div>
     </div>

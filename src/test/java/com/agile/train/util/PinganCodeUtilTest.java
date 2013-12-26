@@ -52,21 +52,20 @@ public class PinganCodeUtilTest {
         int assertCount = 0;
         for (MethodDisplayer method : methods) {
             assertCount += assertMethod(method, "copy(Object from, Object to, Converter converter)",
-                    "public abstract", "public", "copy(Object,Object,Converter)", "void");
+                    "public abstract", "public", "copy(Object,Object,Converter): void");
             assertCount += assertMethod(method, "compatible(PropertyDescriptor getter, PropertyDescriptor setter)",
-                    "private static", "private", "compatible(PropertyDescriptor,PropertyDescriptor)", "boolean");
+                    "private static", "private", "compatible(PropertyDescriptor,PropertyDescriptor): boolean");
         }
         assertThat(assertCount, is(2));
     }
 
     private int assertMethod(MethodDisplayer method, String exceptFindText,
                              String exceptModifierText, String exceptModifier,
-                             String exceptShowText, String exceptReturnText) {
+                             String exceptShowText) {
         if (method.getFindText().equals(exceptFindText)) {
             assertThat(method.getModifierText(), is(exceptModifierText));
             assertThat(method.getModifier(), is(exceptModifier));
             assertThat(method.getShowText(), is(exceptShowText));
-            assertThat(method.getReturnText(), is(exceptReturnText));
             return 1;
         }
         return 0;

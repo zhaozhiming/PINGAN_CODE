@@ -3,7 +3,7 @@ $(document).ready(function () {
     dp.SyntaxHighlighter.HighlightAll('code');
 
     $(".sidebar a").click(function () {
-        window.find($.trim($(this).text()), false, false);
+        window.find($.trim($(this).data("findtext")), false, false);
     });
 
 });

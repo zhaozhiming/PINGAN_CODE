@@ -13,7 +13,6 @@ public class MethodDisplayer {
     private String modifier;
     private String showText;
     private String findText;
-    private String returnText;
 
     public MethodDisplayer(MethodDeclaration methodDeclaration) {
         this.modifierText = Modifier.toString(methodDeclaration.getModifiers());
@@ -23,7 +22,6 @@ public class MethodDisplayer {
 
         this.showText = getShowTextBy(methodDeclaration, parameters);
         this.findText = getFindText(methodDeclaration, parameters);
-        this.returnText = methodDeclaration.getType().toString();
     }
 
     private String getFindText(MethodDeclaration methodDeclaration, List<Parameter> parameters) {
@@ -46,7 +44,7 @@ public class MethodDisplayer {
             parameterTypes.add(parameter.getType().toString());
         }
         Joiner.on(",").appendTo(showString, parameterTypes);
-        showString.append(")");
+        showString.append(")").append(": ").append(methodDeclaration.getType().toString());
         return showString.toString();
     }
 
@@ -71,9 +69,5 @@ public class MethodDisplayer {
 
     public String getFindText() {
         return findText;
-    }
-
-    public String getReturnText() {
-        return returnText;
     }
 }
