@@ -1,5 +1,6 @@
 package com.agile.train.controller;
 
+import com.agile.train.model.MethodDisplayer;
 import com.agile.train.model.SourceFile;
 import com.agile.train.util.PinganCodeUtil;
 import japa.parser.ast.body.MethodDeclaration;
@@ -56,7 +57,7 @@ public class MainController {
         log.debug("path:" + path);
         String jarFileName = repositoryName + File.separator + jarName;
         String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(jarFileName, path);
-        List<MethodDeclaration> methods = PinganCodeUtil.retrieveMethodsByFileNameInJar(jarFileName, path);
+        List<MethodDisplayer> methods = PinganCodeUtil.retrieveMethodsByFileNameInJar(jarFileName, path);
         model.put("sourceCode", sourceCode);
         model.put("methods", methods);
         log.debug("show finish");

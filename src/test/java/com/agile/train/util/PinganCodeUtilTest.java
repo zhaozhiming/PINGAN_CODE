@@ -1,10 +1,9 @@
 package com.agile.train.util;
 
+import com.agile.train.model.MethodDisplayer;
 import com.agile.train.model.SourceFile;
-import japa.parser.ast.body.MethodDeclaration;
 import org.junit.Test;
 
-import java.lang.reflect.Modifier;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -46,23 +45,28 @@ public class PinganCodeUtilTest {
 
     @Test
     public void should_return_method_when_given_source_code_file() throws Exception {
-        List<MethodDeclaration> methods = PinganCodeUtil.retrieveMethodsByFileNameInJar(
+        List<MethodDisplayer> methods = PinganCodeUtil.retrieveMethodsByFileNameInJar(
                 "test-repository/cglib-2.2-sources.jar", "net/sf/cglib/beans/BeanCopier.java");
         assertThat(methods.size(), is(12));
 
         int assertCount = 0;
-        for (MethodDeclaration method : methods) {
-            assertCount += assertMethod(method, "copy", "public abstract", "void");
-            assertCount += assertMethod(method, "compatible", "private static", "boolean");
+        for (MethodDisplayer method : methods) {
+            assertCount += assertMethod(method, "copy(Object from, Object to, Converter converter)",
+                    "public abstract", "public", "copy(Object,Object,Converter)", "void");
+            assertCount += assertMethod(method, "compatible(PropertyDescriptor getter, PropertyDescriptor setter)",
+                    "private static", "private", "compatible(PropertyDescriptor,PropertyDescriptor)", "boolean");
         }
         assertThat(assertCount, is(2));
     }
 
-    private int assertMethod(MethodDeclaration method, String exceptName,
-                             String exceptModifiers, String exceptType) {
-        if (method.getName().equals(exceptName)) {
-            assertThat(Modifier.toString(method.getModifiers()), is(exceptModifiers));
-            assertThat(method.getType().toString(), is(exceptType));
+    private int assertMethod(MethodDisplayer method, String exceptFindText,
+                             String exceptModifierText, String exceptModifier,
+                             String exceptShowText, String exceptReturnText) {
+        if (method.getFindText().equals(exceptFindText)) {
+            assertThat(method.getModifierText(), is(exceptModifierText));
+            assertThat(method.getModifier(), is(exceptModifier));
+            assertThat(method.getShowText(), is(exceptShowText));
+            assertThat(method.getReturnText(), is(exceptReturnText));
             return 1;
         }
         return 0;

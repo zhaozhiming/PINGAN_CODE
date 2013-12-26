@@ -1,5 +1,6 @@
 package com.agile.train.util;
 
+import com.agile.train.model.MethodDisplayer;
 import com.agile.train.model.SourceFile;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -55,7 +56,7 @@ public class PinganCodeUtil {
         return retrieveCompilationUnitInFromJavaFile(jarFileName, fileName).toString();
     }
 
-    public static List<MethodDeclaration> retrieveMethodsByFileNameInJar(String jarFileName, String fileName) throws Exception {
+    public static List<MethodDisplayer> retrieveMethodsByFileNameInJar(String jarFileName, String fileName) throws Exception {
         CompilationUnit compilationUnit = retrieveCompilationUnitInFromJavaFile(jarFileName, fileName);
 
         MethodVisitor methodVisitor = new MethodVisitor();
@@ -143,14 +144,16 @@ public class PinganCodeUtil {
 
     private static class MethodVisitor extends VoidVisitorAdapter {
 
-        private List<MethodDeclaration> methods = Lists.newArrayList();
+        private List<MethodDisplayer> methods = Lists.newArrayList();
 
         @Override
         public void visit(MethodDeclaration method, Object arg) {
-            methods.add(method);
+            methods.add(new MethodDisplayer(method));
         }
 
-        public List<MethodDeclaration> getMethods() {
+        public List<MethodDisplayer> getMethods() {
+
+
             return methods;
         }
     }
