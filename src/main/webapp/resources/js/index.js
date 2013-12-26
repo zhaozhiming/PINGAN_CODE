@@ -1,9 +1,5 @@
 $(document).ready(function () {
 
-    $('#sidebarBtn').click(function () {
-        $('#sidebar').sidebar('toggle');
-    });
-
     var rules = {
         searchKeyword: {
             identifier: 'searchKeyword',

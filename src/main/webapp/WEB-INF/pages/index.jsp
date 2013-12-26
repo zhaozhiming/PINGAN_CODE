@@ -25,28 +25,6 @@
     </div>
 </div>
 
-<div id="sidebar" class="ui large vertical inverted labeled icon sidebar menu">
-    <a class="item" href="<c:url value='/'/>">
-        <i class="red awesome home icon"></i> <b>主页</b>
-    </a>
-
-    <div>
-        <a class="item" href="<c:url value='/'/>">
-            <i class="blue search icon"></i>
-            <b>搜索</b>
-        </a>
-    </div>
-</div>
-
-<div id="sidebarBtn" class="ui black huge vertical animated button" style="width: 7%;">
-    <div class="visible content">
-        <i class="icon list layout"></i>
-    </div>
-    <div class="hidden content">
-        菜单
-    </div>
-</div>
-
 <div class="ui grid">
     <div class="one wide column"></div>
 
