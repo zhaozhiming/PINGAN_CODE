@@ -25,7 +25,7 @@ public class MethodDisplayer {
     }
 
     private String getFindText(MethodDeclaration methodDeclaration, List<Parameter> parameters) {
-        if (parameters == null || parameters.isEmpty()) return "";
+        if (parameters == null || parameters.isEmpty()) return getDefaultFindText(methodDeclaration);
 
         StringBuilder findString = new StringBuilder();
         findString.append(methodDeclaration.getName()).append("(");
@@ -35,10 +35,11 @@ public class MethodDisplayer {
     }
 
     private String getShowTextBy(MethodDeclaration methodDeclaration, List<Parameter> parameters) {
-        if (parameters == null || parameters.isEmpty()) return "";
+        if (parameters == null || parameters.isEmpty()) return getDefaultShowText(methodDeclaration);
 
         StringBuilder showString = new StringBuilder();
         showString.append(methodDeclaration.getName()).append("(");
+
         List<String> parameterTypes = Lists.newArrayList();
         for (Parameter parameter : parameters) {
             parameterTypes.add(parameter.getType().toString());
@@ -46,6 +47,14 @@ public class MethodDisplayer {
         Joiner.on(",").appendTo(showString, parameterTypes);
         showString.append(")").append(": ").append(methodDeclaration.getType().toString());
         return showString.toString();
+    }
+
+    private String getDefaultFindText(MethodDeclaration methodDeclaration) {
+        return methodDeclaration.getName() + "()";
+    }
+
+    private String getDefaultShowText(MethodDeclaration methodDeclaration) {
+        return getDefaultFindText(methodDeclaration) + ": " + methodDeclaration.getType().toString();
     }
 
     private String getModifierBy(String modifierText) {
@@ -69,5 +78,15 @@ public class MethodDisplayer {
 
     public String getFindText() {
         return findText;
+    }
+
+    @Override
+    public String toString() {
+        return "MethodDisplayer{" +
+                "modifierText='" + modifierText + '\'' +
+                ", modifier='" + modifier + '\'' +
+                ", showText='" + showText + '\'' +
+                ", findText='" + findText + '\'' +
+                '}';
     }
 }

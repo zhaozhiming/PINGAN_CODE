@@ -55,8 +55,10 @@ public class PinganCodeUtilTest {
                     "public abstract", "public", "copy(Object,Object,Converter): void");
             assertCount += assertMethod(method, "compatible(PropertyDescriptor getter, PropertyDescriptor setter)",
                     "private static", "private", "compatible(PropertyDescriptor,PropertyDescriptor): boolean");
+            assertCount += assertMethod(method, "getDefaultClassLoader()",
+                    "protected", "protected", "getDefaultClassLoader(): ClassLoader");
         }
-        assertThat(assertCount, is(2));
+        assertThat(assertCount, is(3));
     }
 
     private int assertMethod(MethodDisplayer method, String exceptFindText,
