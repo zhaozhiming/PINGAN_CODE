@@ -6,4 +6,6 @@ $(document).ready(function () {
         window.find($.trim($(this).data("findtext")), false, false);
     });
 
+    $('#sidebar').sidebar('toggle');
+
 });

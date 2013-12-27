@@ -17,18 +17,29 @@
 <body>
 <input id="syntaxHighLightFont" type="hidden" value="<c:url value='/resources/fonts/clipboard.swf'/>">
 
+<div id="sidebar" class="ui left sidebar vertical menu">
+    <div class="header item">方法列表：</div>
+    <c:forEach items="${methods}" var="method">
+        <a class="item" data-findtext="${method.findText}">
+            <c:if test="${method.modifier == 'public'}">
+                <i class="green circle icon"></i>
+            </c:if>
+            <c:if test="${method.modifier == 'protected'}">
+                <i class="blue circle icon"></i>
+            </c:if>
+            <c:if test="${method.modifier == 'private'}">
+                <i class="red circle icon"></i>
+            </c:if>
+            <c:if test="${method.modifier == 'default'}">
+                <i class="purple circle icon"></i>
+            </c:if>
+                ${method.showText}
+        </a>
+    </c:forEach>
+</div>
+
 <div class="ui divided grid">
-    <div class="three wide column">
-
-        <div class="ui left sidebar vertical menu active">
-            <div class="header item">方法列表：</div>
-            <c:forEach items="${methods}" var="method">
-                <a class="item" data-findtext="${method.findText}">${method.showText}</a>
-            </c:forEach>
-        </div>
-    </div>
-
-    <div class="thirteen wide column">
+    <div class="sixteen wide column">
         <pre name="code" class="java">
             ${sourceCode}
         </pre>
