@@ -7,6 +7,7 @@ a web application to grep source code from jars
 - ☑ Add page modifier tip
 - ☐ Could find folder's jars in repository
 - ☐ make page find function better
+- ☐ use log file to replace console
 - ☐ Use Angularjs replace jsp
 
 

@@ -13,13 +13,14 @@ public class MethodDisplayer {
     private static final String MODIFIER_PROTECTED = "protected";
     private static final String MODIFIER_PRIVATE = "private";
     private static final String MODIFIER_DEFAULT = "default";
+
     private String modifierText;
     private String modifier;
     private String showText;
     private String findText;
 
     public MethodDisplayer(MethodDeclaration methodDeclaration) {
-        this.modifierText = Modifier.toString(methodDeclaration.getModifiers());
+        this.modifierText = convertModifierToString(methodDeclaration);
         this.modifier = getModifierBy(modifierText);
 
         List<Parameter> parameters = methodDeclaration.getParameters();
@@ -28,37 +29,38 @@ public class MethodDisplayer {
         this.findText = getFindText(methodDeclaration, parameters);
     }
 
-    private String getFindText(MethodDeclaration methodDeclaration, List<Parameter> parameters) {
-        if (parameters == null || parameters.isEmpty()) return getDefaultFindText(methodDeclaration);
+    private String convertModifierToString(MethodDeclaration methodDeclaration) {
+        return Modifier.toString(methodDeclaration.getModifiers());
+    }
 
+    private String getFindText(MethodDeclaration methodDeclaration, List<Parameter> parameters) {
         StringBuilder findString = new StringBuilder();
+        findString.append(convertModifierToString(methodDeclaration)).append(" ");
+        findString.append(methodDeclaration.getType().toString()).append(" ");
         findString.append(methodDeclaration.getName()).append("(");
-        Joiner.on(", ").appendTo(findString, parameters);
+
+        if (parameters != null && !parameters.isEmpty()) {
+            Joiner.on(", ").appendTo(findString, parameters);
+        }
+
         findString.append(")");
         return findString.toString();
     }
 
     private String getShowTextBy(MethodDeclaration methodDeclaration, List<Parameter> parameters) {
-        if (parameters == null || parameters.isEmpty()) return getDefaultShowText(methodDeclaration);
-
         StringBuilder showString = new StringBuilder();
         showString.append(methodDeclaration.getName()).append("(");
 
-        List<String> parameterTypes = Lists.newArrayList();
-        for (Parameter parameter : parameters) {
-            parameterTypes.add(parameter.getType().toString());
+        if (parameters != null && !parameters.isEmpty()) {
+            List<String> parameterTypes = Lists.newArrayList();
+            for (Parameter parameter : parameters) {
+                parameterTypes.add(parameter.getType().toString());
+            }
+            Joiner.on(",").appendTo(showString, parameterTypes);
         }
-        Joiner.on(",").appendTo(showString, parameterTypes);
+
         showString.append(")").append(": ").append(methodDeclaration.getType().toString());
         return showString.toString();
-    }
-
-    private String getDefaultFindText(MethodDeclaration methodDeclaration) {
-        return methodDeclaration.getName() + "()";
-    }
-
-    private String getDefaultShowText(MethodDeclaration methodDeclaration) {
-        return getDefaultFindText(methodDeclaration) + ": " + methodDeclaration.getType().toString();
     }
 
     private String getModifierBy(String modifierText) {
