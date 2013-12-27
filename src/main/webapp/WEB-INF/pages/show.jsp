@@ -22,16 +22,16 @@
     <c:forEach items="${methods}" var="method">
         <a class="item" data-findtext="${method.findText}">
             <c:if test="${method.modifier == 'public'}">
-                <i class="green circle icon"></i>
+                <i class="green circle icon" data-content="${method.modifierText}" data-position="right center"></i>
             </c:if>
             <c:if test="${method.modifier == 'protected'}">
-                <i class="blue circle icon"></i>
+                <i class="blue circle icon" data-content="${method.modifierText}" data-position="right center"></i>
             </c:if>
             <c:if test="${method.modifier == 'private'}">
-                <i class="red circle icon"></i>
+                <i class="red circle icon" data-content="${method.modifierText}" data-position="right center"></i>
             </c:if>
             <c:if test="${method.modifier == 'default'}">
-                <i class="purple circle icon"></i>
+                <i class="purple circle icon" data-content="${method.modifierText}" data-position="right center"></i>
             </c:if>
                 ${method.showText}
         </a>
