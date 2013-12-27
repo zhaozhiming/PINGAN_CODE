@@ -9,6 +9,10 @@ import java.lang.reflect.Modifier;
 import java.util.List;
 
 public class MethodDisplayer {
+    private static final String MODIFIER_PUBLIC = "public";
+    private static final String MODIFIER_PROTECTED = "protected";
+    private static final String MODIFIER_PRIVATE = "private";
+    private static final String MODIFIER_DEFAULT = "default";
     private String modifierText;
     private String modifier;
     private String showText;
@@ -58,10 +62,10 @@ public class MethodDisplayer {
     }
 
     private String getModifierBy(String modifierText) {
-        if (modifierText.contains("public")) return "public";
-        if (modifierText.contains("protected")) return "protected";
-        if (modifierText.contains("private")) return "private";
-        return "default";
+        if (modifierText.contains(MODIFIER_PUBLIC)) return MODIFIER_PUBLIC;
+        if (modifierText.contains(MODIFIER_PROTECTED)) return MODIFIER_PROTECTED;
+        if (modifierText.contains(MODIFIER_PRIVATE)) return MODIFIER_PRIVATE;
+        return MODIFIER_DEFAULT;
     }
 
     public String getModifier() {
