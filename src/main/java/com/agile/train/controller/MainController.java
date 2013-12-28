@@ -48,15 +48,14 @@ public class MainController {
     }
 
     @RequestMapping(value = "/show", method = RequestMethod.GET)
-    public String show(@RequestParam("jarName") String jarName,
-                       @RequestParam("path") String path,
+    public String show(@RequestParam("sourceFilePath") String sourceFilePath,
+                       @RequestParam("jarFilePath") String jarFilePath,
                        ModelMap model) throws Exception {
         log.debug("show start");
-        log.debug("jarName:" + jarName);
-        log.debug("path:" + path);
-        String jarFileName = repositoryName + File.separator + jarName;
-        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(jarFileName, path);
-        List<MethodDisplayer> methods = PinganCodeUtil.retrieveMethodsByFileNameInJar(jarFileName, path);
+        log.debug("sourceFilePath:" + sourceFilePath);
+        log.debug("jarFilePath:" + jarFilePath);
+        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(jarFilePath, sourceFilePath);
+        List<MethodDisplayer> methods = PinganCodeUtil.retrieveMethodsByFileNameInJar(jarFilePath, sourceFilePath);
         model.put("sourceCode", sourceCode);
         model.put("methods", methods);
         log.debug("show finish");
