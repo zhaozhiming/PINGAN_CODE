@@ -17,9 +17,7 @@
 
 <div class="ui transparent inverted main menu">
     <div class="container">
-        <a class="launch item" href="<c:url value='/'/>"><i class="icon list layout"></i> 首页</a>
-
-        <div class="title item">
+                <div class="title item">
             <b>PingAn Code</b>
         </div>
     </div>
