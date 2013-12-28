@@ -87,7 +87,7 @@ public class PinganCodeUtil {
             String path = jarEntry.getName();
 
             if (path.endsWith(SUFFIX_JAVA) && path.contains(searchKeyword)) {
-                result.add(new SourceFile(jarFile.getName(), retrieveVersionInJar(jarFile), path));
+                result.add(new SourceFile(jarFile.getName(), retrieveVersionInJar(jarFile), path, jarFile.getAbsolutePath()));
             }
         }
         return result;

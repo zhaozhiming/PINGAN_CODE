@@ -4,11 +4,13 @@ public class SourceFile {
     private String jarName;
     private String version;
     private String path;
+    private String jarFilePath;
 
-    public SourceFile(String jarName, String version, String path) {
+    public SourceFile(String jarName, String version, String path, String jarFilePath) {
         this.jarName = jarName;
         this.version = version;
         this.path = path;
+        this.jarFilePath = jarFilePath;
     }
 
     public String getJarName() {
@@ -21,5 +23,9 @@ public class SourceFile {
 
     public String getPath() {
         return path;
+    }
+
+    public String getJarFilePath() {
+        return jarFilePath;
     }
 }

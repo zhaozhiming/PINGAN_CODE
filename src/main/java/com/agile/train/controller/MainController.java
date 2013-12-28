@@ -58,7 +58,6 @@ public class MainController {
         String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(jarFileName, path);
         List<MethodDisplayer> methods = PinganCodeUtil.retrieveMethodsByFileNameInJar(jarFileName, path);
         model.put("sourceCode", sourceCode);
-        log.debug("methods:" + methods);
         model.put("methods", methods);
         log.debug("show finish");
         return "show";

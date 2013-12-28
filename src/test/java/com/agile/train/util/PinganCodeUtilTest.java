@@ -9,6 +9,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertNotNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.StringContains.containsString;
 
 public class PinganCodeUtilTest {
 
@@ -19,6 +20,7 @@ public class PinganCodeUtilTest {
         assertThat(result.get(0).getPath(), is("net/sf/cglib/beans/BeanCopier.java"));
         assertThat(result.get(0).getVersion(), is("2.2"));
         assertThat(result.get(0).getJarName(), is("cglib-2.2-sources.jar"));
+        assertThat(result.get(0).getJarFilePath(), containsString("test-repository/cglib-2.2-sources.jar"));
     }
 
     @Test
@@ -42,6 +44,7 @@ public class PinganCodeUtilTest {
         assertThat(result.get(0).getPath(), is("org/springframework/core/convert/support/ArrayToCollectionConverter.java"));
         assertThat(result.get(0).getVersion(), is("3.2.0"));
         assertThat(result.get(0).getJarName(), is("spring-core-3.2.0.RELEASE-sources.jar"));
+        assertThat(result.get(0).getJarFilePath(), containsString("test-repository/spring/spring-core-3.2.0.RELEASE-sources.jar"));
     }
 
     @Test
@@ -51,6 +54,7 @@ public class PinganCodeUtilTest {
         assertThat(result.get(0).getPath(), is("org/springframework/web/servlet/support/JspAwareRequestContext.java"));
         assertThat(result.get(0).getVersion(), is("3.2.0"));
         assertThat(result.get(0).getJarName(), is("spring-webmvc-3.2.0.RELEASE-sources.jar"));
+        assertThat(result.get(0).getJarFilePath(), containsString("test-repository/spring/3.2.0/spring-webmvc-3.2.0.RELEASE-sources.jar"));
     }
 
     @Test
