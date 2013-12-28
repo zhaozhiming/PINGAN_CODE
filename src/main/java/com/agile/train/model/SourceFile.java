@@ -3,13 +3,13 @@ package com.agile.train.model;
 public class SourceFile {
     private String jarName;
     private String version;
-    private String path;
+    private String sourceFilePath;
     private String jarFilePath;
 
-    public SourceFile(String jarName, String version, String path, String jarFilePath) {
+    public SourceFile(String jarName, String version, String sourceFilePath, String jarFilePath) {
         this.jarName = jarName;
         this.version = version;
-        this.path = path;
+        this.sourceFilePath = sourceFilePath;
         this.jarFilePath = jarFilePath;
     }
 
@@ -21,8 +21,8 @@ public class SourceFile {
         return version;
     }
 
-    public String getPath() {
-        return path;
+    public String getSourceFilePath() {
+        return sourceFilePath;
     }
 
     public String getJarFilePath() {

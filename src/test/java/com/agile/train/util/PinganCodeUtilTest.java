@@ -17,7 +17,7 @@ public class PinganCodeUtilTest {
     public void should_search_file_in_repository_by_keyword_return_1_file_when_have_1_jar() throws Exception {
         List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "BeanCopier");
         assertThat(result.size(), is(1));
-        assertThat(result.get(0).getPath(), is("net/sf/cglib/beans/BeanCopier.java"));
+        assertThat(result.get(0).getSourceFilePath(), is("net/sf/cglib/beans/BeanCopier.java"));
         assertThat(result.get(0).getVersion(), is("2.2"));
         assertThat(result.get(0).getJarName(), is("cglib-2.2-sources.jar"));
         assertThat(result.get(0).getJarFilePath(), containsString("test-repository/cglib-2.2-sources.jar"));
@@ -41,7 +41,7 @@ public class PinganCodeUtilTest {
     public void should_return_file_when_jar_in_repository_folder() throws Exception {
         List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "ArrayToCollectionConverter");
         assertThat(result.size(), is(1));
-        assertThat(result.get(0).getPath(), is("org/springframework/core/convert/support/ArrayToCollectionConverter.java"));
+        assertThat(result.get(0).getSourceFilePath(), is("org/springframework/core/convert/support/ArrayToCollectionConverter.java"));
         assertThat(result.get(0).getVersion(), is("3.2.0"));
         assertThat(result.get(0).getJarName(), is("spring-core-3.2.0.RELEASE-sources.jar"));
         assertThat(result.get(0).getJarFilePath(), containsString("test-repository/spring/spring-core-3.2.0.RELEASE-sources.jar"));
@@ -51,7 +51,7 @@ public class PinganCodeUtilTest {
     public void should_return_file_when_jar_in_repository_multiply_folders() throws Exception {
         List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "JspAwareRequestContext");
         assertThat(result.size(), is(1));
-        assertThat(result.get(0).getPath(), is("org/springframework/web/servlet/support/JspAwareRequestContext.java"));
+        assertThat(result.get(0).getSourceFilePath(), is("org/springframework/web/servlet/support/JspAwareRequestContext.java"));
         assertThat(result.get(0).getVersion(), is("3.2.0"));
         assertThat(result.get(0).getJarName(), is("spring-webmvc-3.2.0.RELEASE-sources.jar"));
         assertThat(result.get(0).getJarFilePath(), containsString("test-repository/spring/3.2.0/spring-webmvc-3.2.0.RELEASE-sources.jar"));
@@ -97,7 +97,7 @@ public class PinganCodeUtilTest {
 
     private int assertSourceFileWhenExist(SourceFile sourceFile, String exceptPath,
                                           String exceptJarName, String exceptVersion) {
-        if (sourceFile.getPath().equals(exceptPath)) {
+        if (sourceFile.getSourceFilePath().equals(exceptPath)) {
             assertThat(sourceFile.getJarName(), is(exceptJarName));
             assertThat(sourceFile.getVersion(), is(exceptVersion));
             return 1;
