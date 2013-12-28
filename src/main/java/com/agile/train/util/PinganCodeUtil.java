@@ -44,7 +44,10 @@ public class PinganCodeUtil {
 
         List<SourceFile> result = Lists.newArrayList();
         for (File file : files) {
-            if (file.isDirectory()) continue;
+            if (file.isDirectory()) {
+                result.addAll(searchFileInRepositoryByKeyword(file.getAbsolutePath(), searchKeyword));
+                continue;
+            }
 
             result.addAll(searchFileInJarByKeyword(file, searchKeyword));
         }
@@ -152,8 +155,6 @@ public class PinganCodeUtil {
         }
 
         public List<MethodDisplayer> getMethods() {
-
-
             return methods;
         }
     }

@@ -13,7 +13,7 @@ import static org.hamcrest.core.Is.is;
 public class PinganCodeUtilTest {
 
     @Test
-    public void should_search_file_in_repository_by_keyword_return_1_file_when_when_have_1_jar() throws Exception {
+    public void should_search_file_in_repository_by_keyword_return_1_file_when_have_1_jar() throws Exception {
         List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "BeanCopier");
         assertThat(result.size(), is(1));
         assertThat(result.get(0).getPath(), is("net/sf/cglib/beans/BeanCopier.java"));
@@ -22,9 +22,9 @@ public class PinganCodeUtilTest {
     }
 
     @Test
-    public void should_search_file_in_repository_by_keyword_return_more_files_when_when_have_many_jars() throws Exception {
+    public void should_search_file_in_repository_by_keyword_return_more_files_when_have_many_jars() throws Exception {
         List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "Log");
-        assertThat(result.size(), is(16));
+        assertThat(result.size(), is(18));
         int assertCount = 0;
         for (SourceFile sourceFile : result) {
             assertCount += assertSourceFileWhenExist(sourceFile, "org/slf4j/impl/Log4jLoggerAdapter.java",
@@ -33,6 +33,24 @@ public class PinganCodeUtilTest {
                     "commons-logging-1.1.1-sources.jar", "1.1.1");
         }
         assertThat(assertCount, is(2));
+    }
+
+    @Test
+    public void should_return_file_when_jar_in_repository_folder() throws Exception {
+        List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "ArrayToCollectionConverter");
+        assertThat(result.size(), is(1));
+        assertThat(result.get(0).getPath(), is("org/springframework/core/convert/support/ArrayToCollectionConverter.java"));
+        assertThat(result.get(0).getVersion(), is("3.2.0"));
+        assertThat(result.get(0).getJarName(), is("spring-core-3.2.0.RELEASE-sources.jar"));
+    }
+
+    @Test
+    public void should_return_file_when_jar_in_repository_multiply_folders() throws Exception {
+        List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "JspAwareRequestContext");
+        assertThat(result.size(), is(1));
+        assertThat(result.get(0).getPath(), is("org/springframework/web/servlet/support/JspAwareRequestContext.java"));
+        assertThat(result.get(0).getVersion(), is("3.2.0"));
+        assertThat(result.get(0).getJarName(), is("spring-webmvc-3.2.0.RELEASE-sources.jar"));
     }
 
     @Test
