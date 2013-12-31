@@ -7,8 +7,10 @@ a web application to grep source code from jars
 - ☑ Add page modifier tip
 - ☑ Could find folder's jars in repository
 - ☑ Make page find function better
-- ☐ Move function to model from util class
 - ☐ Could find source file in zip file
+- ☐ Use multiply keywords to find source file
+- ☐ add loading image when search source file
+- ☐ Move function to model from util class
 - ☐ Use Angularjs replace jsp
 
 
