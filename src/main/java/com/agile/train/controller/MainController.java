@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.File;
 import java.util.List;
 
 @Controller
@@ -54,8 +53,8 @@ public class MainController {
         log.debug("show start");
         log.debug("sourceFilePath:" + sourceFilePath);
         log.debug("jarFilePath:" + jarFilePath);
-        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInJar(jarFilePath, sourceFilePath);
-        List<MethodDisplayer> methods = PinganCodeUtil.retrieveMethodsByFileNameInJar(jarFilePath, sourceFilePath);
+        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInCompressFile(jarFilePath, sourceFilePath);
+        List<MethodDisplayer> methods = PinganCodeUtil.retrieveMethodsByFileNameInCompressFile(jarFilePath, sourceFilePath);
         model.put("sourceCode", sourceCode);
         model.put("methods", methods);
         log.debug("show finish");

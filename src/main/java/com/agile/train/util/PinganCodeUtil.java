@@ -28,8 +28,8 @@ public class PinganCodeUtil {
     private static final String SUFFIX_JAVA = ".java";
     private static final String UNKNOWN_VERSION = "";
     private static final int VERSION_INDEX = 1;
-    private static final String PREFIX_JAR_FILE = "jar:file:";
-    private static final String PREFIX_FILE_IN_JAR = "!/";
+    private static final String PREFIX_COMPRESS_FILE = "jar:file:";
+    private static final String PREFIX_FILE_IN_COMPRESS = "!/";
 
     public static List<SourceFile> searchFileInRepositoryByKeyword(String repositoryPath,
                                                                    String searchKeyword) throws IOException {
@@ -45,18 +45,18 @@ public class PinganCodeUtil {
                 continue;
             }
 
-            result.addAll(searchFileInJarByKeyword(file, searchKeyword));
+            result.addAll(searchFileInCompressFileByKeyword(file, searchKeyword));
         }
 
         return result;
     }
 
-    public static String readSourceCodeByFileNameInJar(String jarFileName, String fileName) throws Exception {
-        return retrieveCompilationUnitInFromJavaFile(jarFileName, fileName).toString();
+    public static String readSourceCodeByFileNameInCompressFile(String compressFileName, String fileName) throws Exception {
+        return retrieveCompilationUnitInFromJavaFile(compressFileName, fileName).toString();
     }
 
-    public static List<MethodDisplayer> retrieveMethodsByFileNameInJar(String jarFileName, String fileName) throws Exception {
-        CompilationUnit compilationUnit = retrieveCompilationUnitInFromJavaFile(jarFileName, fileName);
+    public static List<MethodDisplayer> retrieveMethodsByFileNameInCompressFile(String compressFileName, String fileName) throws Exception {
+        CompilationUnit compilationUnit = retrieveCompilationUnitInFromJavaFile(compressFileName, fileName);
 
         MethodVisitor methodVisitor = new MethodVisitor();
         methodVisitor.visit(compilationUnit, null);
@@ -64,10 +64,10 @@ public class PinganCodeUtil {
         return methodVisitor.getMethods();
     }
 
-    private static List<SourceFile> searchFileInJarByKeyword(File jarFile, String searchKeyword) throws IOException {
-        ZipFile zipFile = new ZipFile(jarFile);
+    private static List<SourceFile> searchFileInCompressFileByKeyword(File compressFile, String searchKeyword) throws IOException {
+        ZipFile zipFile = new ZipFile(compressFile);
         try {
-            List<SourceFile> result = searchFileByKeyword(jarFile, searchKeyword, zipFile.entries());
+            List<SourceFile> result = searchFileByKeyword(compressFile, searchKeyword, zipFile.entries());
             zipFile.close();
             return result;
         } finally {
@@ -75,37 +75,37 @@ public class PinganCodeUtil {
         }
     }
 
-    private static List<SourceFile> searchFileByKeyword(File jarFile, String searchKeyword, Enumeration<? extends ZipEntry> entries) throws IOException {
+    private static List<SourceFile> searchFileByKeyword(File compressFile, String searchKeyword, Enumeration<? extends ZipEntry> entries) throws IOException {
         List<SourceFile> result = Lists.newArrayList();
         while (entries.hasMoreElements()) {
             ZipEntry zipEntry = entries.nextElement();
             String path = zipEntry.getName();
 
             if (path.endsWith(SUFFIX_JAVA) && path.contains(searchKeyword)) {
-                String version = retrieveVersionInJarName(jarFile.getName());
-                result.add(new SourceFile(jarFile.getName(),
+                String version = retrieveVersionInCompressFileName(compressFile.getName());
+                result.add(new SourceFile(compressFile.getName(),
                         Strings.isNullOrEmpty(version) ? UNKNOWN_VERSION : version,
-                        path, jarFile.getAbsolutePath()));
+                        path, compressFile.getAbsolutePath()));
             }
         }
         return result;
     }
 
-    private static String retrieveVersionInJarName(String jarName) {
+    private static String retrieveVersionInCompressFileName(String compressFileName) {
         String regEx = REGEX_FIND_VERSION;
         Pattern pattern = Pattern.compile(regEx);
-        Matcher matcher = pattern.matcher(jarName);
+        Matcher matcher = pattern.matcher(compressFileName);
         matcher.find();
 
         return matcher.group(VERSION_INDEX);
     }
 
     private static CompilationUnit retrieveCompilationUnitInFromJavaFile(
-            String jarFileName, String fileName) throws Exception {
+            String compressFileName, String fileName) throws Exception {
         InputStream inputStream = null;
 
         try {
-            URL url = new URL(PREFIX_JAR_FILE + jarFileName + PREFIX_FILE_IN_JAR + fileName);
+            URL url = new URL(PREFIX_COMPRESS_FILE + compressFileName + PREFIX_FILE_IN_COMPRESS + fileName);
             inputStream = url.openStream();
             // parse the file
             return JavaParser.parse(inputStream);
