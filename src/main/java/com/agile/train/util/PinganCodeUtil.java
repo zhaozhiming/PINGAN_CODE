@@ -17,18 +17,14 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.jar.Attributes;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class PinganCodeUtil {
 
     private static final String REGEX_FIND_VERSION = "(\\d(\\.\\d)+)";
-    private static final String IMPLEMENTATION_VERSION = "Implementation-Version";
-    private static final String BUNDLE_VERSION = "Bundle-Version";
     private static final String SUFFIX_JAVA = ".java";
     private static final String UNKNOWN_VERSION = "";
     private static final int VERSION_INDEX = 1;
@@ -69,57 +65,30 @@ public class PinganCodeUtil {
     }
 
     private static List<SourceFile> searchFileInJarByKeyword(File jarFile, String searchKeyword) throws IOException {
-        JarFile jar = new JarFile(jarFile);
-
+        ZipFile zipFile = new ZipFile(jarFile);
         try {
-            List<SourceFile> result = searchFileByKeyword(jarFile, searchKeyword, jar.entries());
-            jar.close();
+            List<SourceFile> result = searchFileByKeyword(jarFile, searchKeyword, zipFile.entries());
+            zipFile.close();
             return result;
         } finally {
-            jar.close();
+            zipFile.close();
         }
     }
 
-    private static List<SourceFile> searchFileByKeyword(File jarFile, String searchKeyword, Enumeration<JarEntry> entries) throws IOException {
+    private static List<SourceFile> searchFileByKeyword(File jarFile, String searchKeyword, Enumeration<? extends ZipEntry> entries) throws IOException {
         List<SourceFile> result = Lists.newArrayList();
         while (entries.hasMoreElements()) {
-            JarEntry jarEntry = entries.nextElement();
-            String path = jarEntry.getName();
+            ZipEntry zipEntry = entries.nextElement();
+            String path = zipEntry.getName();
 
             if (path.endsWith(SUFFIX_JAVA) && path.contains(searchKeyword)) {
-                result.add(new SourceFile(jarFile.getName(), retrieveVersionInJar(jarFile), path, jarFile.getAbsolutePath()));
+                String version = retrieveVersionInJarName(jarFile.getName());
+                result.add(new SourceFile(jarFile.getName(),
+                        Strings.isNullOrEmpty(version) ? UNKNOWN_VERSION : version,
+                        path, jarFile.getAbsolutePath()));
             }
         }
         return result;
-    }
-
-    private static String retrieveVersionInJar(File jarFile) throws IOException {
-        JarFile jar = new JarFile(jarFile);
-        try {
-            Manifest manifest = jar.getManifest();
-
-            Attributes attributes = manifest.getMainAttributes();
-            if (attributes == null) return UNKNOWN_VERSION;
-
-            String version = retrieveVersionInManifest(attributes);
-            jar.close();
-
-            version = Strings.isNullOrEmpty(version) ? retrieveVersionInJarName(jarFile.getName()) : version;
-            return Strings.isNullOrEmpty(version) ? UNKNOWN_VERSION : version;
-        } finally {
-            jar.close();
-        }
-    }
-
-    private static String retrieveVersionInManifest(Attributes attributes) {
-        for (Object attribute : attributes.keySet()) {
-            Attributes.Name key = (Attributes.Name) attribute;
-            String keyword = key.toString();
-            if (keyword.equals(IMPLEMENTATION_VERSION) || keyword.equals(BUNDLE_VERSION)) {
-                return (String) attributes.get(key);
-            }
-        }
-        return UNKNOWN_VERSION;
     }
 
     private static String retrieveVersionInJarName(String jarName) {

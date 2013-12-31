@@ -14,7 +14,7 @@ import static org.hamcrest.core.StringContains.containsString;
 public class PinganCodeUtilTest {
 
     @Test
-    public void should_search_file_in_repository_by_keyword_return_1_file_when_have_1_jar() throws Exception {
+    public void should_search_source_file_in_repository_by_keyword_return_1_file_when_have_1_jar() throws Exception {
         List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "BeanCopier");
         assertThat(result.size(), is(1));
         assertThat(result.get(0).getSourceFilePath(), is("net/sf/cglib/beans/BeanCopier.java"));
@@ -24,9 +24,9 @@ public class PinganCodeUtilTest {
     }
 
     @Test
-    public void should_search_file_in_repository_by_keyword_return_more_files_when_have_many_jars() throws Exception {
+    public void should_search_source_file_in_repository_by_keyword_return_more_files_when_have_many_jars() throws Exception {
         List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "Log");
-        assertThat(result.size(), is(18));
+        assertThat(result.size(), is(29));
         int assertCount = 0;
         for (SourceFile sourceFile : result) {
             assertCount += assertSourceFileWhenExist(sourceFile, "org/slf4j/impl/Log4jLoggerAdapter.java",
@@ -38,7 +38,7 @@ public class PinganCodeUtilTest {
     }
 
     @Test
-    public void should_return_file_when_jar_in_repository_folder() throws Exception {
+    public void should_return_source_file_when_jar_in_repository_folder() throws Exception {
         List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "ArrayToCollectionConverter");
         assertThat(result.size(), is(1));
         assertThat(result.get(0).getSourceFilePath(), is("org/springframework/core/convert/support/ArrayToCollectionConverter.java"));
@@ -48,13 +48,23 @@ public class PinganCodeUtilTest {
     }
 
     @Test
-    public void should_return_file_when_jar_in_repository_multiply_folders() throws Exception {
+    public void should_return_source_file_when_jar_in_repository_multiply_folders() throws Exception {
         List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "JspAwareRequestContext");
         assertThat(result.size(), is(1));
         assertThat(result.get(0).getSourceFilePath(), is("org/springframework/web/servlet/support/JspAwareRequestContext.java"));
         assertThat(result.get(0).getVersion(), is("3.2.0"));
         assertThat(result.get(0).getJarName(), is("spring-webmvc-3.2.0.RELEASE-sources.jar"));
         assertThat(result.get(0).getJarFilePath(), containsString("test-repository/spring/3.2.0/spring-webmvc-3.2.0.RELEASE-sources.jar"));
+    }
+
+    @Test
+    public void should_return_source_file_when_meet_a_zip_file() throws Exception {
+        List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository", "DaoTransactionState");
+        assertThat(result.size(), is(1));
+        assertThat(result.get(0).getSourceFilePath(), is("src/com/ibatis/dao/engine/impl/DaoTransactionState.java"));
+        assertThat(result.get(0).getVersion(), is("2.1.7"));
+        assertThat(result.get(0).getJarName(), is("ibatis-2.1.7-src.zip"));
+        assertThat(result.get(0).getJarFilePath(), containsString("test-repository/ibatis-2.1.7-src.zip"));
     }
 
     @Test
