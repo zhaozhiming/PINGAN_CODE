@@ -64,7 +64,8 @@ public class PinganCodeUtil {
         return methodVisitor.getMethods();
     }
 
-    private static List<SourceFile> searchFileInCompressFileByKeyword(File compressFile, String searchKeyword) throws IOException {
+    private static List<SourceFile> searchFileInCompressFileByKeyword(File compressFile,
+                                                                      String searchKeyword) throws IOException {
         ZipFile zipFile = new ZipFile(compressFile);
         try {
             List<SourceFile> result = searchFileByKeyword(compressFile, searchKeyword, zipFile.entries());
@@ -75,7 +76,9 @@ public class PinganCodeUtil {
         }
     }
 
-    private static List<SourceFile> searchFileByKeyword(File compressFile, String searchKeyword, Enumeration<? extends ZipEntry> entries) throws IOException {
+    private static List<SourceFile> searchFileByKeyword(File compressFile, String searchKeyword,
+                                                        Enumeration<? extends ZipEntry> entries)
+            throws IOException {
         List<SourceFile> result = Lists.newArrayList();
         while (entries.hasMoreElements()) {
             ZipEntry zipEntry = entries.nextElement();
@@ -107,7 +110,6 @@ public class PinganCodeUtil {
         try {
             URL url = new URL(PREFIX_COMPRESS_FILE + compressFileName + PREFIX_FILE_IN_COMPRESS + fileName);
             inputStream = url.openStream();
-            // parse the file
             return JavaParser.parse(inputStream);
         } finally {
             IOUtils.closeQuietly(inputStream);
