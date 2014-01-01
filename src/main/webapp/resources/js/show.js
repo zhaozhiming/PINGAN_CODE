@@ -8,6 +8,6 @@ $(document).ready(function () {
 
     $('#sidebar').sidebar('toggle');
 
-    $('.circle.icon').popup();
+    $('a.item').popup();
 
 });
