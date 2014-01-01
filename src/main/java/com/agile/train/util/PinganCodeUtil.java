@@ -56,8 +56,8 @@ public class PinganCodeUtil {
     private static void sortSourceFilesByFireMatch(List<SourceFile> result) {
         Collections.sort(result, new Comparator<SourceFile>() {
             @Override
-            public int compare(SourceFile o1, SourceFile o2) {
-                return o2.getFireMatch() - o1.getFireMatch();
+            public int compare(SourceFile sourceFile1, SourceFile sourceFile2) {
+                return sourceFile2.getFireMatch() - sourceFile1.getFireMatch();
             }
         });
     }
