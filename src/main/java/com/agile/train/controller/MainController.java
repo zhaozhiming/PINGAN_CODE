@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -34,10 +35,12 @@ public class MainController {
     @ResponseBody
     String result(@RequestParam("searchKeyword") String searchKeyword) throws Exception {
         log.debug("search start");
-        log.debug("searchKeyword:" + searchKeyword);
         log.debug("repositoryName:" + repositoryName);
 
-        List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword(repositoryName, searchKeyword);
+        String[] searchKeywords = searchKeyword.split("\\s");
+        log.debug("searchKeyword:" + Arrays.toString(searchKeywords));
+
+        List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword(repositoryName, searchKeywords);
         ObjectMapper mapper = new ObjectMapper();
         String resultArrayJson = mapper.writeValueAsString(result);
 

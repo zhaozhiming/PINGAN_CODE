@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -32,7 +33,7 @@ public class PinganCodeUtil {
     private static final String PREFIX_FILE_IN_COMPRESS = "!/";
 
     public static List<SourceFile> searchFileInRepositoryByKeyword(String repositoryPath,
-                                                                   String searchKeyword) throws IOException {
+                                                                   String[] searchKeyword) throws IOException {
         File repository = new File(repositoryPath);
         File[] files = repository.listFiles();
 
@@ -48,15 +49,25 @@ public class PinganCodeUtil {
             result.addAll(searchFileInCompressFileByKeyword(file, searchKeyword));
         }
 
+        sortSourceFilesByFireMatch(result);
         return result;
     }
 
+    private static void sortSourceFilesByFireMatch(List<SourceFile> result) {
+        Collections.sort(result, new Comparator<SourceFile>() {
+            @Override
+            public int compare(SourceFile o1, SourceFile o2) {
+                return o2.getFireMatch() - o1.getFireMatch();
+            }
+        });
+    }
+
     public static String readSourceCodeByFileNameInCompressFile(String compressFileName, String fileName) throws Exception {
-        return retrieveCompilationUnitInFromJavaFile(compressFileName, fileName).toString();
+        return retrieveCompilationUnitFromJavaFile(compressFileName, fileName).toString();
     }
 
     public static List<MethodDisplayer> retrieveMethodsByFileNameInCompressFile(String compressFileName, String fileName) throws Exception {
-        CompilationUnit compilationUnit = retrieveCompilationUnitInFromJavaFile(compressFileName, fileName);
+        CompilationUnit compilationUnit = retrieveCompilationUnitFromJavaFile(compressFileName, fileName);
 
         MethodVisitor methodVisitor = new MethodVisitor();
         methodVisitor.visit(compilationUnit, null);
@@ -65,7 +76,7 @@ public class PinganCodeUtil {
     }
 
     private static List<SourceFile> searchFileInCompressFileByKeyword(File compressFile,
-                                                                      String searchKeyword) throws IOException {
+                                                                      String[] searchKeyword) throws IOException {
         ZipFile zipFile = new ZipFile(compressFile);
         try {
             List<SourceFile> result = searchFileByKeyword(compressFile, searchKeyword, zipFile.entries());
@@ -76,7 +87,7 @@ public class PinganCodeUtil {
         }
     }
 
-    private static List<SourceFile> searchFileByKeyword(File compressFile, String searchKeyword,
+    private static List<SourceFile> searchFileByKeyword(File compressFile, String[] searchKeywords,
                                                         Enumeration<? extends ZipEntry> entries)
             throws IOException {
         List<SourceFile> result = Lists.newArrayList();
@@ -84,14 +95,26 @@ public class PinganCodeUtil {
             ZipEntry zipEntry = entries.nextElement();
             String path = zipEntry.getName();
 
-            if (path.endsWith(SUFFIX_JAVA) && path.contains(searchKeyword)) {
+            if (path.endsWith(SUFFIX_JAVA) && path.contains(searchKeywords[0])) {
+                int fireMatch = pathMatchKeywordCount(searchKeywords, path);
+
                 String version = retrieveVersionInCompressFileName(compressFile.getName());
                 result.add(new SourceFile(compressFile.getName(),
                         Strings.isNullOrEmpty(version) ? UNKNOWN_VERSION : version,
-                        path, compressFile.getAbsolutePath()));
+                        path, compressFile.getAbsolutePath(), fireMatch));
             }
         }
         return result;
+    }
+
+    private static int pathMatchKeywordCount(String[] searchKeywords, String path) {
+        int fireMatch = 0;
+        for (String searchKeyword : searchKeywords) {
+            if (path.contains(searchKeyword)) {
+                fireMatch++;
+            }
+        }
+        return fireMatch;
     }
 
     private static String retrieveVersionInCompressFileName(String compressFileName) {
@@ -103,7 +126,7 @@ public class PinganCodeUtil {
         return matcher.group(VERSION_INDEX);
     }
 
-    private static CompilationUnit retrieveCompilationUnitInFromJavaFile(
+    private static CompilationUnit retrieveCompilationUnitFromJavaFile(
             String compressFileName, String fileName) throws Exception {
         InputStream inputStream = null;
 
