@@ -5,9 +5,11 @@
 <head>
     <title>PingAn Code</title>
     <link type="text/css" rel="stylesheet" href="<c:url value='/resources/css/semantic.min.css'/>">
+    <link type="text/css" rel="stylesheet" href="<c:url value='/resources/css/index.css'/>">
 
     <script type="text/javascript" src="<c:url value='/resources/js/jquery-2.0.3.min.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/resources/js/semantic.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/resources/js/jquery.highlight.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/resources/js/index.js'/>"></script>
 </head>
 <body>

@@ -9,7 +9,7 @@ a web application to grep source code from jars
 - ☑ Make page find function better
 - ☑ Could find source file in zip file
 - ☑ Use multiply keywords to find source file
-- ☐ Use highlight to show search keywords
+- ☑ Use highlight to show search keywords
 - ☐ add loading image when search source file
 - ☐ Move function to model from util class
 - ☐ Use Angularjs replace jsp

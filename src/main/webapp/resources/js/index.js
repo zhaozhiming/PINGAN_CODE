@@ -15,16 +15,19 @@ $(document).ready(function () {
     var setting = {
         onSuccess: function () {
             var searchUrl = $("#searchUrl").val();
-            var data = {
+            var queryData = {
                 searchKeyword: $("#searchKeyword").val()
             };
 
-            $.post(searchUrl, data, function (data) {
+            $.post(searchUrl, queryData, function (data) {
                 showResult(data);
 
                 $("tr").hover(function () {
                     $(this).toggleClass("positive");
                 });
+
+                var searchKeywords = $("#searchKeyword").val().split(/\s+/);
+                $('body td').highlight(searchKeywords);
             });
         }
     };
