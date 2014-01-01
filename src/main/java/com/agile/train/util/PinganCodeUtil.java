@@ -95,8 +95,8 @@ public class PinganCodeUtil {
             ZipEntry zipEntry = entries.nextElement();
             String path = zipEntry.getName();
 
-            if (path.endsWith(SUFFIX_JAVA) && constainsIgnoreCase(path, searchKeywords[0])) {
-                int fireMatch = pathMatchKeywordCount(searchKeywords, path);
+            int fireMatch = pathMatchKeywordCount(searchKeywords, path, compressFile.getName());
+            if (path.endsWith(SUFFIX_JAVA) && fireMatch > 0) {
 
                 String version = retrieveVersionInCompressFileName(compressFile.getName());
                 result.add(new SourceFile(compressFile.getName(),
@@ -107,17 +107,20 @@ public class PinganCodeUtil {
         return result;
     }
 
-    private static int pathMatchKeywordCount(String[] searchKeywords, String path) {
+    private static int pathMatchKeywordCount(String[] searchKeywords, String path, String compressFileName) {
         int fireMatch = 0;
         for (String searchKeyword : searchKeywords) {
-            if (constainsIgnoreCase(path, searchKeyword)) {
+            if (containsIgnoreCase(path, searchKeyword)) {
+                fireMatch++;
+            }
+            if (containsIgnoreCase(compressFileName, searchKeyword)) {
                 fireMatch++;
             }
         }
         return fireMatch;
     }
 
-    private static boolean constainsIgnoreCase(String findString, String containsString) {
+    private static boolean containsIgnoreCase(String findString, String containsString) {
         return Pattern.compile(Pattern.quote(containsString),
                 Pattern.CASE_INSENSITIVE).matcher(findString).find();
     }

@@ -28,7 +28,7 @@ public class PinganCodeUtilTest {
     public void should_search_source_file_in_repository_by_keyword_return_more_files_when_have_many_jars() throws Exception {
         List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository",
                 new String[] {"Log"});
-        assertThat(result.size(), is(31));
+        assertThat(result.size(), is(33));
         int assertCount = 0;
         for (SourceFile sourceFile : result) {
             assertCount += assertSourceFileWhenExist(sourceFile, "org/slf4j/impl/Log4jLoggerAdapter.java",
@@ -76,7 +76,7 @@ public class PinganCodeUtilTest {
     public void should_return_source_file_when_have_multiply_search_keyword() throws Exception {
         List<SourceFile> result = PinganCodeUtil.searchFileInRepositoryByKeyword("test-repository",
                 new String[] {"Log", "slf4j"});
-        assertThat(result.size(), is(31));
+        assertThat(result.size(), is(33));
         assertThat(result.get(0).getSourceFilePath(), is("org/slf4j/impl/Log4jLoggerAdapter.java"));
         assertThat(result.get(0).getVersion(), is("1.7.5"));
         assertThat(result.get(0).getJarName(), is("slf4j-log4j12-1.7.5-sources.jar"));
