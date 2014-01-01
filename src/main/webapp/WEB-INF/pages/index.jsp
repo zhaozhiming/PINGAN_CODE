@@ -47,6 +47,10 @@
 
         <div class="ui divider"></div>
 
+        <div class="ui dimmer">
+            <div class="ui large text loader">查询中...</div>
+        </div>
+
         <table class="ui table segment">
             <thead>
             <tr>

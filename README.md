@@ -10,7 +10,7 @@ a web application to grep source code from jars
 - ☑ Could find source file in zip file
 - ☑ Use multiply keywords to find source file
 - ☑ Use highlight to show search keywords
-- ☐ add loading image when search source file
+- ☑ Add loading image when search source file
 - ☐ Move function to model from util class
 - ☐ Use Angularjs replace jsp
 

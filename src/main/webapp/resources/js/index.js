@@ -19,16 +19,25 @@ $(document).ready(function () {
                 searchKeyword: $("#searchKeyword").val()
             };
 
-            $.post(searchUrl, queryData, function (data) {
-                showResult(data);
+            $.ajax({
+                url: searchUrl,
+                type: "POST",
+                data: queryData,
+                beforeSend: function () {
+                    $(".ui.dimmer").addClass("active");
+                }
+            }).done(function (data) {
+                    $(".ui.dimmer").removeClass("active");
 
-                $("tr").hover(function () {
-                    $(this).toggleClass("positive");
+                    showResult(data);
+
+                    $("tr").hover(function () {
+                        $(this).toggleClass("positive");
+                    });
+
+                    var searchKeywords = $("#searchKeyword").val().split(/\s+/);
+                    $('body td').highlight(searchKeywords);
                 });
-
-                var searchKeywords = $("#searchKeyword").val().split(/\s+/);
-                $('body td').highlight(searchKeywords);
-            });
         }
     };
 
