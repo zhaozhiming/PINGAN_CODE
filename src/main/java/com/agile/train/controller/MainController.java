@@ -56,8 +56,8 @@ public class MainController {
         log.debug("show start");
         log.debug("sourceFilePath:" + sourceFilePath);
         log.debug("jarFilePath:" + jarFilePath);
-        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInCompressFile(jarFilePath, sourceFilePath);
-        List<MethodDisplayer> methods = PinganCodeUtil.retrieveMethodsByFileNameInCompressFile(jarFilePath, sourceFilePath);
+        String sourceCode = PinganCodeUtil.readSourceCodeBy(jarFilePath, sourceFilePath);
+        List<MethodDisplayer> methods = PinganCodeUtil.retrieveMethodsBy(jarFilePath, sourceFilePath);
         model.put("sourceCode", sourceCode);
         model.put("methods", methods);
         log.debug("show finish");

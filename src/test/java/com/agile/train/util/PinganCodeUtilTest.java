@@ -96,7 +96,7 @@ public class PinganCodeUtilTest {
 
     @Test
     public void should_read_source_code_by_file_name_in_jar_correct() throws Exception {
-        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInCompressFile(
+        String sourceCode = PinganCodeUtil.readSourceCodeBy(
                 "test-repository/cglib-2.2-sources.jar", "net/sf/cglib/beans/BeanCopier.java");
         assertNotNull(sourceCode);
         assertThat(sourceCode.contains("class BeanCopier"), is(true));
@@ -104,7 +104,7 @@ public class PinganCodeUtilTest {
 
     @Test
     public void should_read_source_code_by_file_name_in_zip_correct() throws Exception {
-        String sourceCode = PinganCodeUtil.readSourceCodeByFileNameInCompressFile(
+        String sourceCode = PinganCodeUtil.readSourceCodeBy(
                 "test-repository/ibatis-2.1.7-src.zip", "src/com/ibatis/db/sqlmap/MappedStatement.java");
         assertNotNull(sourceCode);
         assertThat(sourceCode.contains("public class MappedStatement"), is(true));
@@ -112,7 +112,7 @@ public class PinganCodeUtilTest {
 
     @Test
     public void should_return_method_when_given_source_code_file() throws Exception {
-        List<MethodDisplayer> methods = PinganCodeUtil.retrieveMethodsByFileNameInCompressFile(
+        List<MethodDisplayer> methods = PinganCodeUtil.retrieveMethodsBy(
                 "test-repository/cglib-2.2-sources.jar", "net/sf/cglib/beans/BeanCopier.java");
         assertThat(methods.size(), is(12));
 

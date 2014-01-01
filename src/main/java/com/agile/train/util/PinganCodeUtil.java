@@ -62,11 +62,11 @@ public class PinganCodeUtil {
         });
     }
 
-    public static String readSourceCodeByFileNameInCompressFile(String compressFileName, String fileName) throws Exception {
+    public static String readSourceCodeBy(String compressFileName, String fileName) throws Exception {
         return retrieveCompilationUnitFromJavaFile(compressFileName, fileName).toString();
     }
 
-    public static List<MethodDisplayer> retrieveMethodsByFileNameInCompressFile(String compressFileName, String fileName) throws Exception {
+    public static List<MethodDisplayer> retrieveMethodsBy(String compressFileName, String fileName) throws Exception {
         CompilationUnit compilationUnit = retrieveCompilationUnitFromJavaFile(compressFileName, fileName);
 
         MethodVisitor methodVisitor = new MethodVisitor();
