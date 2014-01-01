@@ -33,7 +33,7 @@ public class PinganCodeUtil {
     private static final String PREFIX_FILE_IN_COMPRESS = "!/";
 
     public static List<SourceFile> searchFileInRepositoryByKeyword(String repositoryPath,
-                                                                   String[] searchKeyword) throws IOException {
+                                                                   String[] searchKeywords) throws IOException {
         File repository = new File(repositoryPath);
         File[] files = repository.listFiles();
 
@@ -42,11 +42,11 @@ public class PinganCodeUtil {
         List<SourceFile> result = Lists.newArrayList();
         for (File file : files) {
             if (file.isDirectory()) {
-                result.addAll(searchFileInRepositoryByKeyword(file.getAbsolutePath(), searchKeyword));
+                result.addAll(searchFileInRepositoryByKeyword(file.getAbsolutePath(), searchKeywords));
                 continue;
             }
 
-            result.addAll(searchFileInCompressFileByKeyword(file, searchKeyword));
+            result.addAll(searchFileInCompressFileByKeyword(file, searchKeywords));
         }
 
         sortSourceFilesByFireMatch(result);
@@ -76,10 +76,10 @@ public class PinganCodeUtil {
     }
 
     private static List<SourceFile> searchFileInCompressFileByKeyword(File compressFile,
-                                                                      String[] searchKeyword) throws IOException {
+                                                                      String[] searchKeywords) throws IOException {
         ZipFile zipFile = new ZipFile(compressFile);
         try {
-            List<SourceFile> result = searchFileByKeyword(compressFile, searchKeyword, zipFile.entries());
+            List<SourceFile> result = searchFileByKeyword(compressFile, searchKeywords, zipFile.entries());
             zipFile.close();
             return result;
         } finally {
